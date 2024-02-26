@@ -569,15 +569,15 @@ struct SDOrcasHeartV2 : Module {
 
     void process(const ProcessArgs& args) override {
         bool advance = 0;
-        if (inputs[CLOCK_INPUT].active) {
-            advance = clockIn.process(rescale(inputs[CLOCK_INPUT].getVoltage(), 0.1f, 2.f, 0.f, 1.f));
-        } else {
+        // if (inputs[CLOCK_INPUT].active) {
+        //    advance = clockIn.process(rescale(inputs[CLOCK_INPUT].getVoltage(), 0.1f, 2.f, 0.f, 1.f));
+        //} else {
             internalClock += args.sampleTime;
             if (internalClock >= speed) {
                 advance = 1;
                 internalClock = 0;
             }
-        }
+        //}
 
         updateParameters();
         if (advance) updateSyncedParameters();
