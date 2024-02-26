@@ -174,16 +174,16 @@ struct SDOrcasHeartV2 : Module {
     };
     
     enum LightIds {
-        SCALE_A_LIGHT,
-        SCALE_B_LIGHT,
+        // SCALE_A_LIGHT,
+        // SCALE_B_LIGHT,
         NUM_LIGHTS
     };
 
     SDOrcasHeartV2() {
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-        configLight(SCALE_A_LIGHT, "Scale A Selected");
-        configLight(SCALE_B_LIGHT, "Scale B Selected");
+        // configLight(SCALE_A_LIGHT, "Scale A Selected");
+        // configLight(SCALE_B_LIGHT, "Scale B Selected");
         configButton(SCALE_PARAM, "Toggle Scales A/B/both");
         configInput(SCALE_INPUT, "Toggle Scales A/B");
         configSwitch(SCALE_A_OCT_PARAM, 0, 1, 0, "Octave A", { "Down", "Up" });
@@ -356,6 +356,7 @@ struct SDOrcasHeartV2 : Module {
     }
 
     void updateScaleLeds() {
+        /*
         if (scale == SCALECOUNT) {
             lights[SCALE_A_LIGHT].setBrightness(1.f);
             lights[SCALE_B_LIGHT].setBrightness(1.f);
@@ -366,6 +367,7 @@ struct SDOrcasHeartV2 : Module {
             lights[SCALE_A_LIGHT].setBrightness(1.f);
             lights[SCALE_B_LIGHT].setBrightness(0.f);
         }
+        */
     }
 
     void processScaleSwitch() {
@@ -775,8 +777,8 @@ struct SDOrcasHeartWidget : ModuleWidget {
         addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(132.115, 119.318)), module, SDOrcasHeartV2::GATE_7_OUTPUT));
         addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(143.299, 119.318)), module, SDOrcasHeartV2::GATE_8_OUTPUT));
 
-        addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(20.284, 16.863)), module, SDOrcasHeartV2::SCALE_A_LIGHT));
-        addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(20.284, 32.646)), module, SDOrcasHeartV2::SCALE_B_LIGHT));
+        // addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(20.284, 16.863)), module, SDOrcasHeartV2::SCALE_A_LIGHT));
+        // addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(20.284, 32.646)), module, SDOrcasHeartV2::SCALE_B_LIGHT));
     }
 };
 
