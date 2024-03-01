@@ -9,9 +9,9 @@ struct SDFormation : Module {
         DIRECTION_PARAM,
         TILT_PARAM,
         RANDOM_PARAM,
-        RANDOMCV_PARAM,
-        TILTCV_PARAM,
         SPREADCV_PARAM,
+        TILTCV_PARAM,
+        RANDOMCV_PARAM,
         PARAMS_LEN
     };
     enum InputId {
@@ -39,9 +39,9 @@ struct SDFormation : Module {
         configParam(DIRECTION_PARAM, 0.f, 1.f, 0.f, "");
         configParam(TILT_PARAM, 0.f, 1.f, 0.f, "");
         configParam(RANDOM_PARAM, 0.f, 1.f, 0.f, "");
-        configParam(RANDOMCV_PARAM, 0.f, 1.f, 0.f, "");
-        configParam(TILTCV_PARAM, 0.f, 1.f, 0.f, "");
         configParam(SPREADCV_PARAM, 0.f, 1.f, 0.f, "");
+        configParam(TILTCV_PARAM, 0.f, 1.f, 0.f, "");
+        configParam(RANDOMCV_PARAM, 0.f, 1.f, 0.f, "");
         configInput(TRIGGER_INPUT, "");
         configInput(SPREADCV_INPUT, "");
         configInput(TILTCV_INPUT, "");
@@ -63,13 +63,13 @@ struct SDFormationWidget : ModuleWidget {
 
         addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(9.85, 16.411)), module, SDFormation::GAIN_PARAM));
         addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(25.71, 16.411)), module, SDFormation::OFFSET_PARAM));
-        addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(25.71, 36.021)), module, SDFormation::SPREAD_PARAM));
-        addParam(createParam<SDThreeSwitch>(mm2px(Vec(7.328, 41.902)), module, SDFormation::DIRECTION_PARAM));
-        addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(25.71, 55.631)), module, SDFormation::TILT_PARAM));
+        addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(17.78, 36.021)), module, SDFormation::SPREAD_PARAM));
+        addParam(createParam<SDThreeSwitch>(mm2px(Vec(4.074, 41.902)), module, SDFormation::DIRECTION_PARAM));
+        addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(17.78, 55.631)), module, SDFormation::TILT_PARAM));
         addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(25.71, 76.215)), module, SDFormation::RANDOM_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.597, 93.373)), module, SDFormation::RANDOMCV_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.597, 93.373)), module, SDFormation::SPREADCV_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.78, 93.373)), module, SDFormation::TILTCV_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(28.963, 93.373)), module, SDFormation::SPREADCV_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(28.963, 93.373)), module, SDFormation::RANDOMCV_PARAM));
 
         addInput(createInputCentered<SDMonoPort>(mm2px(Vec(9.85, 77.203)), module, SDFormation::TRIGGER_INPUT));
         addInput(createInputCentered<SDMonoPort>(mm2px(Vec(6.597, 104.61)), module, SDFormation::SPREADCV_INPUT));
