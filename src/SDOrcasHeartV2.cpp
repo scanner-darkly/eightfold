@@ -192,6 +192,8 @@ struct SDOrcasHeartV2 : Module {
         configInput(SCALE_B_OCT_INPUT, "+ Octave B");
         configSwitch(SCALE_A_LOCK_PARAM, 0, 1, 1, "Enable Scale Presets A", { "Disabled", "Enabled" });
         configSwitch(SCALE_B_LOCK_PARAM, 0, 1, 1, "Enable Scale Presets B", { "Disabled", "Enabled" });
+        getParamQuantity(SCALE_A_LOCK_PARAM)->randomizeEnabled = false;
+        getParamQuantity(SCALE_B_LOCK_PARAM)->randomizeEnabled = false;
         configParam(SCALE_A_PARAM, 1.f, SCALEPRESETCOUNT, 1.f, "Scale Preset A");
         getParamQuantity(SCALE_A_PARAM)->snapEnabled = true;
         configParam(SCALE_B_PARAM, 1.f, SCALEPRESETCOUNT, 1.f, "Scale Preset B");
@@ -223,6 +225,7 @@ struct SDOrcasHeartV2 : Module {
         configInput(RESET_INPUT, "Reset");
 
         configParam(SPEED_PARAM, 20.f, 2000.f, 400.f, "Speed");
+        getParamQuantity(SPEED_PARAM)->randomizeEnabled = false;
         configInput(SPEED_INPUT, "Speed");
 
         configParam(LENGTH_PARAM, 1.f, 64.f, 8.f, "Length");
@@ -230,6 +233,7 @@ struct SDOrcasHeartV2 : Module {
         configInput(LENGTH_INPUT, "Length");
 
         configParam(TRANSPOSE_PARAM, -3.f, 3.f, 0.f, "Transpose");
+        getParamQuantity(TRANSPOSE_PARAM)->randomizeEnabled = false;
         configInput(TRANSPOSE_INPUT, "Transpose");
 
         configParam(GATE_LEN_PARAM, 0.01f, 4.0f, 0.2f, "Gate Length");

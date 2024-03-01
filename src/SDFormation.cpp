@@ -49,19 +49,23 @@ struct SDFormation : Module {
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
         
         configParam(GAIN_PARAM, -1.f, 1.f, 1.f, "Input Gain");
+        getParamQuantity(GAIN_PARAM)->randomizeEnabled = false;
         configParam(OFFSET_PARAM, -10.f, 10.f, 0.f, "CV Offset");
 
         configParam(SPREAD_PARAM, -1.4f, 1.4f, 0.f, "Spread");
         configParam(SPREADCV_PARAM, -1.f, 1.f, 0.f, "Spread CV Level");
+        getParamQuantity(SPREADCV_PARAM)->randomizeEnabled = false;
         configInput(SPREADCV_INPUT, "Spread CV");
         configSwitch(DIRECTION_PARAM, 0.0, 2.0, 1.0, "Direction", {"Down", "Center", "Up"});
         
         configParam(TILT_PARAM, -1.f, 1.f, 0.f, "Tilt");
         configParam(TILTCV_PARAM, -1.f, 1.f, 0.f, "Tilt CV Level");
+        getParamQuantity(TILTCV_PARAM)->randomizeEnabled = false;
         configInput(TILTCV_INPUT, "Tilt CV");
         
         configParam(RANDOM_PARAM, -1.f, 1.f, 0.f, "Random");
         configParam(RANDOMCV_PARAM, -1.f, 1.f, 0.f, "Random CV Level");
+        getParamQuantity(RANDOMCV_PARAM)->randomizeEnabled = false;
         configInput(RANDOMCV_INPUT, "Random CV");
         configInput(TRIGGER_INPUT, "Trigger New Random");
         
