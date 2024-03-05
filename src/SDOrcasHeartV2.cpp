@@ -18,7 +18,7 @@
 
 struct SDOrcasHeartV2 : Module {
 
-    int gatePresets[GATEPRESETCOUNT][NOTECOUNT] = {
+    const int gatePresets[GATEPRESETCOUNT][NOTECOUNT] = {
         {0b0001, 0b0010, 0b0100, 0b1000, 0b0000, 0b0001, 0b0101, 0b1010},
         {0b0011, 0b0010, 0b0101, 0b1000, 0b0001, 0b0010, 0b0100, 0b0100},
         {0b0011, 0b0110, 0b1101, 0b1000, 0b0010, 0b0100, 0b0100, 0b0001},
@@ -40,29 +40,28 @@ struct SDOrcasHeartV2 : Module {
         {0b1001, 0b0010, 0b0101, 0b1000, 0b0010, 0b0100, 0b1010, 0b0001}
     };
 
-    int scalePresets[SCALEPRESETCOUNT][SCALELEN] = {
-    //   0  1  2  3    4  5  6  7    8  9  10 11
-        {1, 0, 1, 0,   1, 1, 0, 1,   0, 1, 0, 1}, // major
-        {1, 0, 1, 0,   1, 1, 0, 1,   1, 0, 0, 1}, // harmonic major
-        {1, 0, 1, 0,   1, 1, 1, 0,   1, 0, 1, 0}, // major locrian
-        {1, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 0}, // major pentatonic
+    const int scalePresets[SCALEPRESETCOUNT][SCALELEN] = {
+        {1, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 0},
+        {1, 0, 1, 0,   0, 1, 0, 1,   0, 1, 0, 0},
+        {0, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 1},
+        {1, 0, 1, 0,   0, 1, 0, 1,   0, 0, 1, 0},
 
-        {1, 0, 1, 1,   0, 1, 0, 1,   1, 0, 1, 0}, // minor
-        {1, 0, 1, 1,   0, 1, 0, 1,   1, 0, 0, 1}, // harmonic minor
-        {1, 0, 1, 0,   1, 0, 1, 1,   0, 1, 1, 0}, // lydian dominant
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
+        {1, 0, 0, 1,   0, 1, 0, 0,   1, 0, 1, 0},
+        {0, 0, 1, 0,   1, 0, 0, 1,   0, 0, 0, 1},
+        {1, 0, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
+        {0, 0, 1, 0,   0, 1, 0, 1,   0, 1, 0, 1},
 
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
+        {1, 0, 1, 0,   1, 0, 1, 0,   0, 1, 0, 0},
+        {0, 1, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
+        {1, 0, 1, 0,   1, 0, 0, 1,   0, 0, 0, 1},
+        {1, 0, 0, 0,   1, 0, 1, 1,   0, 1, 0, 0},
 
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0},
-        {0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0}
+        {0, 0, 1, 1,   0, 1, 0, 0,   1, 0, 1, 0},
+        {1, 0, 0, 1,   0, 1, 1, 0,   0, 0, 1, 0},
+        {1, 0, 0, 1,   0, 1, 0, 1,   0, 0, 0, 1},
+        {1, 0, 0, 1,   0, 1, 1, 0,   0, 1, 0, 0}
     };
-
+    
     enum ParamIds {
         SCALE_PARAM,
         SCALE_A_OCT_PARAM,
@@ -390,7 +389,7 @@ struct SDOrcasHeartV2 : Module {
         
         if (newScaleAPreset != scaleAPreset) {
             scaleAPreset = newScaleAPreset;
-            if (scaleSwitchTrig.process(params[SCALE_A_LOCK_PARAM].getValue() > 0.f)) {
+            if (params[SCALE_A_LOCK_PARAM].getValue() > 0.f) {
                 for (int i = 0; i < SCALELEN; i++)
                     params[SCALE_1_PARAM + i].setValue(scalePresets[scaleAPreset][i]);
             }
@@ -398,7 +397,7 @@ struct SDOrcasHeartV2 : Module {
 
         if (newScaleBPreset != scaleBPreset) {
             scaleBPreset = newScaleBPreset;
-            if (scaleSwitchTrig.process(params[SCALE_B_LOCK_PARAM].getValue() > 0.f)) {
+            if (params[SCALE_B_LOCK_PARAM].getValue() > 0.f) {
                 for (int i = 0; i < SCALELEN; i++)
                     params[SCALE_1_PARAM + i + SCALELEN].setValue(scalePresets[scaleBPreset][i]);
             }
@@ -407,16 +406,26 @@ struct SDOrcasHeartV2 : Module {
 
     void updateScales() {
         scaleCount[SCALECOUNT] = 0;
-        for (int s = 0; s < SCALECOUNT; s++) {
-            scaleCount[s] = 0;
-            
-            for (int i = 0; i < SCALELEN; i++) {
-                if (params[SCALE_1_PARAM + i + s * SCALELEN].getValue() > 0) {
-                    scales[s][scaleCount[s]++] = i;
-                    scales[SCALECOUNT][scaleCount[SCALECOUNT]++] = s ? i + 12 : i;
-                }
+        
+        int count = 0;
+        for (int i = 0; i < SCALELEN; i++) {
+            if (params[SCALE_1_PARAM + i].getValue() > 0) {
+                scales[0][count] = scales[SCALECOUNT][count] = i;
+                count++;
             }
         }
+        scaleCount[0] = scaleCount[SCALECOUNT] = count;
+
+        count = 0;
+        for (int i = 0; i < SCALELEN; i++) {
+            if (params[SCALE_1_PARAM + i + SCALELEN].getValue() > 0) {
+                scales[1][count] = i;
+                scales[SCALECOUNT][count] = i + 12;
+                count++;
+            }
+        }
+        scaleCount[1] = count;
+        scaleCount[SCALECOUNT] += count;
     }
 
     void updateParameters() {
@@ -586,9 +595,9 @@ struct SDOrcasHeartV2 : Module {
         updateTrackParameters();
         processScaleSwitch();
         processScalePresets();
-        updateScales();
 
         if (advance) {
+            updateScales();
             updateCounters();
             updateMod();
             pushHistory();
@@ -629,8 +638,8 @@ struct SDOrcasHeartV2 : Module {
                 int sindex = scale < SCALECOUNT ? scale : nindex < scaleCount[0] ? 0 : 1;
                 
                 float trans = transpose;
-                if ((sindex == 0 && getCombinedValue(SCALE_A_OCT_PARAM, SCALE_A_OCT_INPUT) > 0) || 
-                    (sindex == 1 && getCombinedValue(SCALE_B_OCT_PARAM, SCALE_B_OCT_INPUT) > 0)) trans += 1.f;
+                if ((sindex == 0 && (inputs[SCALE_A_OCT_INPUT].getVoltage() > 0 || params[SCALE_A_OCT_PARAM].getValue() > 0)) ||
+                    (sindex == 1 && (inputs[SCALE_B_OCT_INPUT].getVoltage() > 0 || params[SCALE_B_OCT_PARAM].getValue() > 0))) trans += 1.f;
                 
                 cv = scales[scale][nindex] / 12.f + std::min(2, notes[n][history] / 12) + trans;
                 
