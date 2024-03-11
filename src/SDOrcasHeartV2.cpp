@@ -717,7 +717,7 @@ struct SDOrcasHeartWidget : ModuleWidget {
         addParam(createParamCentered<CKD6>(mm2px(Vec(90.481, 35.006)), module, SDOrcasHeartV2::SCALE_20_PARAM));
         addParam(createParamCentered<CKD6>(mm2px(Vec(99.434, 35.006)), module, SDOrcasHeartV2::SCALE_22_PARAM));
         addParam(createParamCentered<CKD6>(mm2px(Vec(108.388, 35.006)), module, SDOrcasHeartV2::SCALE_24_PARAM));
-        addParam(createParamCentered<Rogan2PSGreen>(mm2px(Vec(20.284, 53.868)), module, SDOrcasHeartV2::SPEED_PARAM));
+        addParam(createParamCentered<SDMediumKnob>(mm2px(Vec(20.284, 53.868)), module, SDOrcasHeartV2::SPEED_PARAM));
         addParam(createParamCentered<Rogan2PSGreen>(mm2px(Vec(42.651, 53.868)), module, SDOrcasHeartV2::LENGTH_PARAM));
         addParam(createParamCentered<Rogan2PSGreen>(mm2px(Vec(65.017, 53.868)), module, SDOrcasHeartV2::TRANSPOSE_PARAM));
         addParam(createParamCentered<Rogan2PSGreen>(mm2px(Vec(87.383, 53.868)), module, SDOrcasHeartV2::GATE_LEN_PARAM));
