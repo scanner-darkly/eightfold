@@ -3,7 +3,9 @@
 #include <math.h>
 #include <string>
 
+#if !__has_include("VCV_adaptor/widget_convert/eightfold.hh")
 #include "SDSharedComponents.hpp"
+#endif
 
 #define SCALELEN 12
 #define SCALECOUNT 2
@@ -43,17 +45,17 @@ struct SDOrcasHeartV2 : Module {
     const int scalePresets[SCALEPRESETCOUNT][SCALELEN] = {
         {1, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 0},
         {1, 0, 1, 0,   0, 1, 0, 1,   0, 1, 0, 0},
-        {0, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 1},
         {1, 0, 1, 0,   0, 1, 0, 1,   0, 0, 1, 0},
-
-        {1, 0, 0, 1,   0, 1, 0, 0,   1, 0, 1, 0},
-        {0, 0, 1, 0,   1, 0, 0, 1,   0, 0, 0, 1},
-        {1, 0, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
-        {0, 0, 1, 0,   0, 1, 0, 1,   0, 1, 0, 1},
-
         {1, 0, 1, 0,   1, 0, 1, 0,   0, 1, 0, 0},
-        {0, 1, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
+        
+        {0, 0, 1, 0,   1, 0, 0, 1,   0, 1, 0, 1},
+        {1, 0, 0, 1,   0, 1, 0, 0,   1, 0, 1, 0},
         {1, 0, 1, 0,   1, 0, 0, 1,   0, 0, 0, 1},
+        {1, 0, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
+
+        {0, 0, 1, 0,   0, 1, 0, 1,   0, 1, 0, 1},
+        {0, 1, 0, 1,   0, 1, 0, 1,   0, 0, 1, 0},
+        {1, 0, 1, 0,   1, 0, 0, 1,   0, 0, 1, 0},
         {1, 0, 0, 0,   1, 0, 1, 1,   0, 1, 0, 0},
 
         {0, 0, 1, 1,   0, 1, 0, 0,   1, 0, 1, 0},
@@ -257,7 +259,8 @@ struct SDOrcasHeartV2 : Module {
         getParamQuantity(SHIFT_PARAM)->snapEnabled = true;
         configInput(SHIFT_INPUT, "Shift");
 
-        configParam(SPACE_PARAM, 0.f, 1.f, 0.f, "Space");
+        configParam(SPACE_PARAM, 0.f, 16.f, 0.f, "Space");
+        getParamQuantity(SPACE_PARAM)->snapEnabled = true;
         configInput(SPACE_INPUT, "Space");
 
         configParam(ROTATE_PARAM, -8.f, 8.f, 0.f, "Rotate");
@@ -311,8 +314,8 @@ struct SDOrcasHeartV2 : Module {
     dsp::SchmittTrigger clockIn, resetIn, scaleSwitchTrig, scaleInputTrig;
     dsp::PulseGenerator clockOut, resetOut;
 
-    int length, voices, algoX, algoY, shift, rotate;
-    float speed, transpose, gateLength, spread, space;
+    int length, voices, algoX, algoY, shift, rotate, space;
+    float speed, transpose, gateLength, spread;
     
     int scales[SCALECOUNT + 1][SCALELEN] = {};
     int scaleCount[SCALECOUNT + 1] = {};
@@ -338,7 +341,7 @@ struct SDOrcasHeartV2 : Module {
     int shifts[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int muted[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    int modCvs[MODCOUNT];
+    float modCvs[MODCOUNT];
     bool modGateOn[MODCOUNT] = { 0, 0, 0, 0 };
     bool modGateChanged[MODCOUNT] = { 1, 1, 1, 1 };
     // engine state
@@ -443,10 +446,13 @@ struct SDOrcasHeartV2 : Module {
         algoX = round(getCombinedValue(ALGO_X_PARAM, ALGO_X_INPUT));
         algoY = round(getCombinedValue(ALGO_Y_PARAM, ALGO_Y_INPUT));
         shift = round(getCombinedValue(SHIFT_PARAM, SHIFT_INPUT));
-        space = getCombinedValue(SPACE_PARAM, SPACE_INPUT);
+        space = round(getCombinedValue(SPACE_PARAM, SPACE_INPUT));
         rotate = round(getCombinedValue(ROTATE_PARAM, ROTATE_INPUT));
-        float algoXMod = getCombinedValue(XMOD_PARAM, XMOD_INPUT) * outputs[CV_1_OUTPUT].getVoltage() / 12.f * 128.f;
-        algoX += round(algoXMod);
+        float xmod = getCombinedValue(XMOD_PARAM, XMOD_INPUT);
+        algoX += round(xmod * outputs[CV_1_OUTPUT].getVoltage() * 12.8f);
+        if (xmod > 0.8) rotate += round((xmod - 0.8) * outputs[CV_5_OUTPUT].getVoltage() * 1.6f);
+        else if (xmod > 0.6) shift += round((xmod - 0.4) * outputs[CV_7_OUTPUT].getVoltage() * 1.6f);
+        else if (xmod > 0.4) algoY += round((xmod - 0.2) * outputs[CV_8_OUTPUT].getVoltage() * 12.8f);
     }
 
     void updateTrackParameters() {
@@ -500,7 +506,7 @@ struct SDOrcasHeartV2 : Module {
         modCvs[2] = weights[0] * (trackOn[2] + trackOn[1]) + weights[3] * (trackOn[0] + trackOn[3]);
         modCvs[3] = weights[1] * (trackOn[1] + trackOn[2]) + weights[2] * (trackOn[2] + trackOn[3]) + weights[3] * (trackOn[3] + trackOn[2]);
 
-        for (int i = 0; i < MODCOUNT; i++) modCvs[i] %= 10;
+        for (int i = 0; i < MODCOUNT; i++) modCvs[i] = (int(modCvs[i]) % 30) / 3.f;
     }
 
     void initHistory() {
@@ -580,7 +586,7 @@ struct SDOrcasHeartV2 : Module {
 
     void process(const ProcessArgs& args) override {
         bool advance = 0;
-        if (inputs[CLOCK_INPUT].active) {
+        if (inputs[CLOCK_INPUT].getChannels()) {
             advance = clockIn.process(rescale(inputs[CLOCK_INPUT].getVoltage(), 0.1f, 2.f, 0.f, 1.f));
         } else {
             internalClock += args.sampleTime;
@@ -608,12 +614,11 @@ struct SDOrcasHeartV2 : Module {
             for (int i = 0; i < NOTECOUNT; i++) gateTriggered[i] = false;
             
             for (int i = 0; i < NOTECOUNT; i++) {
-                if (muted[i]) {
+                if (muted[i] > 0) {
                     muted[i]--;
                 } else {
-                    float chance = space;
-                    //if (space > 0.5f) chance += ((float)i / (float)NOTECOUNT) * 0.1f;
-                    muted[i] = rand() / (float)RAND_MAX < chance ? round(length * (1 + space) * (i + 1)): 0;
+                    float rnd = random::get<float>() * 15.f + 0.01f;
+                    if (rnd < space) muted[i] = space;
                 }
             }
         } else {
@@ -631,7 +636,7 @@ struct SDOrcasHeartV2 : Module {
             if (history >= HISTORYCOUNT) history = HISTORYCOUNT - 1;
             else if (history < 0) history = 0;
 
-            if (scaleCount[scale] == 0 || (n > voices)) {
+            if (scaleCount[scale] == 0) {
                 g = 0;
             } else {
                 int nindex = notes[n][history] % scaleCount[scale];
@@ -643,16 +648,20 @@ struct SDOrcasHeartV2 : Module {
                 
                 cv = scales[scale][nindex] / 12.f + std::min(2, notes[n][history] / 12) + trans;
                 
-                if ((clockIntervalCounter >= delta) && !gateTriggered[n]) {
-                    gateTriggered[n] = true;
-                    if (gateChanged[n][history] && gateOn[n][history] && !muted[n]) {
-                        gateTimer[n] = gateLength;
+                if (n > voices) {
+                    g = 0;
+                } else {
+                    if ((clockIntervalCounter >= delta) && !gateTriggered[n]) {
+                        gateTriggered[n] = true;
+                        if (gateChanged[n][history] && gateOn[n][history] && !muted[n]) {
+                            gateTimer[n] = gateLength;
+                        }
                     }
-                }
 
-                if (gateTimer[n] > 0) gateTimer[n] -= args.sampleTime;
-                if (gateTimer[n] < 0) gateTimer[n] = 0;
-                g = gateTimer[n] > 0 ? 10 : 0;
+                    if (gateTimer[n] > 0) gateTimer[n] -= args.sampleTime;
+                    if (gateTimer[n] < 0) gateTimer[n] = 0;
+                    g = gateTimer[n] > 0 ? 10 : 0;
+                }
             }
 
             outputs[CV_1_OUTPUT + n].setVoltage(cv);
@@ -667,8 +676,14 @@ struct SDOrcasHeartV2 : Module {
 
         for (int i = 0; i < MODCOUNT; i++) {
             outputs[MOD_GATE_1_OUTPUT + i].setVoltage(modGateOn[i] ? 10.f : 0.f);
-            outputs[MOD_CV_1_OUTPUT + i].setVoltage((float)(modCvs[i] % 8) / 7.f * 10.f);
+            outputs[MOD_GATE_1_OUTPUT].setVoltage(modGateOn[i] ? 10.f : 0.f, i);
+            
+            outputs[MOD_CV_1_OUTPUT + i].setVoltage(modCvs[i]);
+            outputs[MOD_CV_1_OUTPUT].setVoltage(modCvs[i], i);
         }
+        
+        outputs[MOD_GATE_1_OUTPUT].setVoltage(MODCOUNT);
+        outputs[MOD_CV_1_OUTPUT].setChannels(MODCOUNT);
 
         outputs[CLOCK_OUTPUT].setVoltage(clockOut.process(args.sampleTime) ? 10.f : 0.f);
         outputs[RESET_OUTPUT].setVoltage(resetOut.process(args.sampleTime) ? 10.f : 0.f);
@@ -746,47 +761,47 @@ struct SDOrcasHeartWidget : ModuleWidget {
         addInput(createInputCentered<SDScalePort>(mm2px(Vec(9.101, 24.754)), module, SDOrcasHeartV2::SCALE_INPUT));
         addInput(createInputCentered<SDScalePort>(mm2px(Vec(31.468, 32.646)), module, SDOrcasHeartV2::SCALE_B_OCT_INPUT));
         addInput(createInputCentered<SDScalePort>(mm2px(Vec(143.299, 32.646)), module, SDOrcasHeartV2::SCALE_B_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(9.101, 69.868)), module, SDOrcasHeartV2::CLOCK_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(9.101, 84.65)), module, SDOrcasHeartV2::RESET_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(20.284, 84.65)), module, SDOrcasHeartV2::SPEED_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(31.468, 84.65)), module, SDOrcasHeartV2::ALGO_X_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(42.651, 84.65)), module, SDOrcasHeartV2::LENGTH_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(53.834, 84.65)), module, SDOrcasHeartV2::ALGO_Y_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(65.017, 84.65)), module, SDOrcasHeartV2::TRANSPOSE_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(76.2, 84.65)), module, SDOrcasHeartV2::SHIFT_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(87.383, 84.65)), module, SDOrcasHeartV2::GATE_LEN_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(98.566, 84.65)), module, SDOrcasHeartV2::SPACE_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(109.749, 84.65)), module, SDOrcasHeartV2::VOICES_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(120.932, 84.65)), module, SDOrcasHeartV2::ROTATE_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(132.115, 84.65)), module, SDOrcasHeartV2::SPREAD_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(143.299, 84.65)), module, SDOrcasHeartV2::XMOD_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(9.101, 69.868)), module, SDOrcasHeartV2::CLOCK_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(9.101, 84.65)), module, SDOrcasHeartV2::RESET_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(20.284, 84.65)), module, SDOrcasHeartV2::SPEED_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(31.468, 84.65)), module, SDOrcasHeartV2::ALGO_X_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(42.651, 84.65)), module, SDOrcasHeartV2::LENGTH_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(53.834, 84.65)), module, SDOrcasHeartV2::ALGO_Y_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(65.017, 84.65)), module, SDOrcasHeartV2::TRANSPOSE_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(76.2, 84.65)), module, SDOrcasHeartV2::SHIFT_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(87.383, 84.65)), module, SDOrcasHeartV2::GATE_LEN_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(98.566, 84.65)), module, SDOrcasHeartV2::SPACE_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(109.749, 84.65)), module, SDOrcasHeartV2::VOICES_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(120.932, 84.65)), module, SDOrcasHeartV2::ROTATE_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(132.115, 84.65)), module, SDOrcasHeartV2::SPREAD_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(143.299, 84.65)), module, SDOrcasHeartV2::XMOD_INPUT));
 
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(9.101, 104.537)), module, SDOrcasHeartV2::CLOCK_OUTPUT));
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(20.284, 104.536)), module, SDOrcasHeartV2::MOD_CV_1_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(31.468, 104.536)), module, SDOrcasHeartV2::MOD_CV_2_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(42.651, 104.536)), module, SDOrcasHeartV2::MOD_CV_3_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(53.834, 104.536)), module, SDOrcasHeartV2::MOD_CV_4_OUTPUT));
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(65.017, 104.536)), module, SDOrcasHeartV2::CV_1_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(76.2, 104.536)), module, SDOrcasHeartV2::CV_2_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(87.383, 104.536)), module, SDOrcasHeartV2::CV_3_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(98.566, 104.536)), module, SDOrcasHeartV2::CV_4_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(109.749, 104.536)), module, SDOrcasHeartV2::CV_5_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(120.932, 104.536)), module, SDOrcasHeartV2::CV_6_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(132.116, 104.536)), module, SDOrcasHeartV2::CV_7_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(143.299, 104.536)), module, SDOrcasHeartV2::CV_8_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(9.101, 119.318)), module, SDOrcasHeartV2::RESET_OUTPUT));
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(20.284, 119.318)), module, SDOrcasHeartV2::MOD_GATE_1_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(31.468, 119.318)), module, SDOrcasHeartV2::MOD_GATE_2_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(42.651, 119.318)), module, SDOrcasHeartV2::MOD_GATE_3_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(53.834, 119.318)), module, SDOrcasHeartV2::MOD_GATE_4_OUTPUT));
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(65.017, 119.318)), module, SDOrcasHeartV2::GATE_1_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(76.2, 119.318)), module, SDOrcasHeartV2::GATE_2_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(87.383, 119.318)), module, SDOrcasHeartV2::GATE_3_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(98.566, 119.318)), module, SDOrcasHeartV2::GATE_4_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(109.749, 119.318)), module, SDOrcasHeartV2::GATE_5_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(120.932, 119.318)), module, SDOrcasHeartV2::GATE_6_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(132.115, 119.318)), module, SDOrcasHeartV2::GATE_7_OUTPUT));
-        addOutput(createOutputCentered<SDMonoPort>(mm2px(Vec(143.299, 119.318)), module, SDOrcasHeartV2::GATE_8_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(9.101, 104.537)), module, SDOrcasHeartV2::CLOCK_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(20.284, 104.536)), module, SDOrcasHeartV2::MOD_CV_1_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(31.468, 104.536)), module, SDOrcasHeartV2::MOD_CV_2_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(42.651, 104.536)), module, SDOrcasHeartV2::MOD_CV_3_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(53.834, 104.536)), module, SDOrcasHeartV2::MOD_CV_4_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(65.017, 104.536)), module, SDOrcasHeartV2::CV_1_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(76.2, 104.536)), module, SDOrcasHeartV2::CV_2_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(87.383, 104.536)), module, SDOrcasHeartV2::CV_3_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(98.566, 104.536)), module, SDOrcasHeartV2::CV_4_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(109.749, 104.536)), module, SDOrcasHeartV2::CV_5_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(120.932, 104.536)), module, SDOrcasHeartV2::CV_6_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(132.116, 104.536)), module, SDOrcasHeartV2::CV_7_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(143.299, 104.536)), module, SDOrcasHeartV2::CV_8_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(9.101, 119.318)), module, SDOrcasHeartV2::RESET_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(20.284, 119.318)), module, SDOrcasHeartV2::MOD_GATE_1_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(31.468, 119.318)), module, SDOrcasHeartV2::MOD_GATE_2_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(42.651, 119.318)), module, SDOrcasHeartV2::MOD_GATE_3_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(53.834, 119.318)), module, SDOrcasHeartV2::MOD_GATE_4_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(65.017, 119.318)), module, SDOrcasHeartV2::GATE_1_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(76.2, 119.318)), module, SDOrcasHeartV2::GATE_2_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(87.383, 119.318)), module, SDOrcasHeartV2::GATE_3_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(98.566, 119.318)), module, SDOrcasHeartV2::GATE_4_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(109.749, 119.318)), module, SDOrcasHeartV2::GATE_5_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(120.932, 119.318)), module, SDOrcasHeartV2::GATE_6_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(132.115, 119.318)), module, SDOrcasHeartV2::GATE_7_OUTPUT));
+        addOutput(createOutputCentered<SDMonoOutPort>(mm2px(Vec(143.299, 119.318)), module, SDOrcasHeartV2::GATE_8_OUTPUT));
 
         addChild(createLightCentered<MediumLight<SDWhiteLight>>(mm2px(Vec(20.284, 16.863)), module, SDOrcasHeartV2::SCALE_A_LIGHT));
         addChild(createLightCentered<MediumLight<SDWhiteLight>>(mm2px(Vec(20.284, 32.646)), module, SDOrcasHeartV2::SCALE_B_LIGHT));

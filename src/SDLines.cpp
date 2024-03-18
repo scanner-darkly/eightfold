@@ -170,7 +170,7 @@ struct SDLinesWidget : ModuleWidget {
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/SDLines.svg")));
 
-        addInput(createInputCentered<SDPolyPort>(mm2px(Vec(5.08, 119.319)), module, SDLines::IN_INPUT));
+        addInput(createInputCentered<SDPolyInPort>(mm2px(Vec(5.08, 119.319)), module, SDLines::IN_INPUT));
 
         auto display = new SDLinesDisplay(mm2px(Vec(0.0, 5.709 / 2.f)), mm2px(Vec(10.16, 104.845)));
         display->module = module;

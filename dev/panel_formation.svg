@@ -27,7 +27,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="2.0000001"
      inkscape:cx="42.249998"
-     inkscape:cy="250.49999"
+     inkscape:cy="251.99999"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -387,42 +387,42 @@
        id="path876-0-0-8-7-2-0-8"
        cx="6.5969172"
        cy="104.60973"
-       inkscape:label="SPREADCV#SDMonoPort"
+       inkscape:label="SPREADCV#SDMonoInPort"
        r="3.6724999" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-8-7-2-0-4"
        cx="17.780083"
        cy="104.60973"
-       inkscape:label="TILTCV#SDMonoPort"
+       inkscape:label="TILTCV#SDMonoInPort"
        r="3.6724999" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-8-7-2-77"
        cx="28.963083"
        cy="104.60973"
-       inkscape:label="RANDOMCV#SDMonoPort"
+       inkscape:label="RANDOMCV#SDMonoInPort"
        r="3.6724999" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-8-7-3-0"
        cx="28.963083"
        cy="119.3185"
-       inkscape:label="REVERSE#SDPolyPort"
+       inkscape:label="REVERSE#SDPolyOutPort"
        r="3.6724999" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-8-7-3-0-3"
        cx="17.780083"
        cy="119.31849"
-       inkscape:label="OUTPUT#SDPolyPort"
+       inkscape:label="OUTPUT#SDPolyOutPort"
        r="3.6724999" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-8-7-2-8"
        cx="6.5969172"
        cy="119.3185"
-       inkscape:label="INPUT#SDMonoPort"
+       inkscape:label="INPUT#SDMonoInPort"
        r="3.6724999" />
     <circle
        inkscape:label="SPREAD#SDMediumKnob"
@@ -443,7 +443,7 @@
        id="path876-0-0-8-7-2-7"
        cx="9.8503342"
        cy="77.20256"
-       inkscape:label="TRIGGER#SDMonoPort"
+       inkscape:label="TRIGGER#SDMonoInPort"
        r="3.6724999" />
     <circle
        inkscape:label="RANDOM#SDMediumKnob"

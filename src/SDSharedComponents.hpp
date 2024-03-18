@@ -1,14 +1,26 @@
 #pragma once
 #include <rack.hpp>
 
-struct SDMonoPort : app::SvgPort {
-    SDMonoPort() {
+struct SDMonoInPort : app::SvgPort {
+    SDMonoInPort() {
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/shared/SDMonoPort.svg")));
     }
 };
 
-struct SDPolyPort : app::SvgPort {
-    SDPolyPort() {
+struct SDMonoOutPort : app::SvgPort {
+    SDMonoOutPort() {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/shared/SDMonoPort.svg")));
+    }
+};
+
+struct SDPolyInPort : app::SvgPort {
+    SDPolyInPort() {
+        setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/shared/SDPolyPort.svg")));
+    }
+};
+
+struct SDPolyOutPort : app::SvgPort {
+    SDPolyOutPort() {
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/shared/SDPolyPort.svg")));
     }
 };

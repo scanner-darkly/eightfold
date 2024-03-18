@@ -29,7 +29,7 @@
      inkscape:cx="325.99998"
      inkscape:cy="192.99999"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="2664"
      inkscape:window-height="1406"
@@ -1114,280 +1114,280 @@
        cx="53.833801"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="MOD_GATE_4#SDMonoPort" />
+       inkscape:label="MOD_GATE_4#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9-1"
        cx="42.650696"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="MOD_GATE_3#SDMonoPort" />
+       inkscape:label="MOD_GATE_3#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-2"
        cx="31.467596"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="MOD_GATE_2#SDMonoPort" />
+       inkscape:label="MOD_GATE_2#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0"
        cx="20.284494"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="MOD_GATE_1#SDPolyPort" />
+       inkscape:label="MOD_GATE_1#SDPolyOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-6"
        cx="53.833797"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="MOD_CV_4#SDMonoPort" />
+       inkscape:label="MOD_CV_4#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-2"
        cx="42.650696"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="MOD_CV_3#SDMonoPort" />
+       inkscape:label="MOD_CV_3#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9"
        cx="31.467594"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="MOD_CV_2#SDMonoPort" />
+       inkscape:label="MOD_CV_2#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0"
        cx="20.284492"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="MOD_CV_1#SDPolyPort" />
+       inkscape:label="MOD_CV_1#SDPolyOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-2-7-8"
        cx="143.2986"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_8#SDMonoPort" />
+       inkscape:label="GATE_8#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9-1-6"
        cx="132.11549"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_7#SDMonoPort" />
+       inkscape:label="GATE_7#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-2-7"
        cx="120.9324"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_6#SDMonoPort" />
+       inkscape:label="GATE_6#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-5"
        cx="109.74928"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_5#SDMonoPort" />
+       inkscape:label="GATE_5#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-2-7-8-9"
        cx="98.5662"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_4#SDMonoPort" />
+       inkscape:label="GATE_4#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9-1-6-5"
        cx="87.383095"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_3#SDMonoPort" />
+       inkscape:label="GATE_3#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-2-7-4"
        cx="76.199997"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_2#SDMonoPort" />
+       inkscape:label="GATE_2#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-5-4"
        cx="65.016891"
        cy="119.31812"
        r="3.6724999"
-       inkscape:label="GATE_1#SDPolyPort" />
+       inkscape:label="GATE_1#SDPolyOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-6-5"
        cx="143.2986"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_8#SDMonoPort" />
+       inkscape:label="CV_8#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-2-1"
        cx="132.11551"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_7#SDMonoPort" />
+       inkscape:label="CV_7#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9-4"
        cx="120.9324"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_6#SDMonoPort" />
+       inkscape:label="CV_6#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-4"
        cx="109.7493"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_5#SDMonoPort" />
+       inkscape:label="CV_5#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-6-5-7"
        cx="98.5662"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_4#SDMonoPort" />
+       inkscape:label="CV_4#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-2-1-7"
        cx="87.383102"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_3#SDMonoPort" />
+       inkscape:label="CV_3#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-9-4-9"
        cx="76.199997"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_2#SDMonoPort" />
+       inkscape:label="CV_2#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-4-1"
        cx="65.016891"
        cy="104.53647"
        r="3.6724999"
-       inkscape:label="CV_1#SDPolyPort" />
+       inkscape:label="CV_1#SDPolyOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-0-4"
        cx="9.1013813"
        cy="119.31815"
        r="3.6724999"
-       inkscape:label="RESET#SDMonoPort" />
+       inkscape:label="RESET#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-8"
        cx="9.1013813"
        cy="104.5365"
        r="3.6724999"
-       inkscape:label="CLOCK#SDMonoPort" />
+       inkscape:label="CLOCK#SDMonoOutPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-2"
        cx="143.2986"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="XMOD#SDMonoPort" />
+       inkscape:label="XMOD#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-08"
        cx="132.11549"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="SPREAD#SDMonoPort" />
+       inkscape:label="SPREAD#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-4"
        cx="120.9324"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="ROTATE#SDMonoPort" />
+       inkscape:label="ROTATE#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-0"
        cx="109.7493"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="VOICES#SDMonoPort" />
+       inkscape:label="VOICES#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-6"
        cx="98.5662"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="SPACE#SDMonoPort" />
+       inkscape:label="SPACE#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-8"
        cx="87.383095"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="GATE_LEN#SDMonoPort" />
+       inkscape:label="GATE_LEN#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-11"
        cx="76.199997"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="SHIFT#SDMonoPort" />
+       inkscape:label="SHIFT#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-9"
        cx="65.016891"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="TRANSPOSE#SDMonoPort" />
+       inkscape:label="TRANSPOSE#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-7"
        cx="53.833794"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="ALGO_Y#SDMonoPort" />
+       inkscape:label="ALGO_Y#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-18-3"
        cx="42.650692"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="LENGTH#SDMonoPort" />
+       inkscape:label="LENGTH#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-18-7"
        cx="31.467592"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="ALGO_X#SDMonoPort" />
+       inkscape:label="ALGO_X#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5-0-18"
        cx="20.284492"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="SPEED#SDMonoPort" />
+       inkscape:label="SPEED#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:0.165;stroke-dasharray:none"
        id="path876-0-0-8-7"
        cx="9.101387"
        cy="84.649918"
        r="3.6724999"
-       inkscape:label="RESET#SDMonoPort" />
+       inkscape:label="RESET#SDMonoInPort" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"
        id="path876-0-5-5"
        cx="9.101387"
        cy="69.86834"
        r="3.6724999"
-       inkscape:label="CLOCK#SDMonoPort" />
+       inkscape:label="CLOCK#SDMonoInPort" />
     <circle
        inkscape:label="XMOD#SDMediumKnob"
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke-width:0.321149"
@@ -1470,7 +1470,7 @@
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke-width:0.321149"
        id="path866-8"
        cx="20.284492"
-       cy="53.768002"
+       cy="53.867992"
        r="6.0089998" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke-width:0.264583"

@@ -26,10 +26,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="-70.25"
+     inkscape:cx="-70"
      inkscape:cy="208"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="2644"
      inkscape:window-height="1338"
@@ -140,7 +140,7 @@
        id="path876-0-0-8-7"
        cx="5.0799999"
        cy="119.3185"
-       inkscape:label="IN#SDPolyPort"
+       inkscape:label="IN#SDPolyInPort"
        r="3.6724999" />
     <rect
        style="display:inline;fill:#ffff00;fill-opacity:1;stroke-width:0.912606"

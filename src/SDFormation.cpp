@@ -178,14 +178,14 @@ struct SDFormationWidget : ModuleWidget {
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.78, 93.373)), module, SDFormation::TILTCV_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(28.963, 93.373)), module, SDFormation::RANDOMCV_PARAM));
 
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(9.85, 77.203)), module, SDFormation::TRIGGER_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(6.597, 104.61)), module, SDFormation::SPREADCV_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(17.78, 104.61)), module, SDFormation::TILTCV_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(28.963, 104.61)), module, SDFormation::RANDOMCV_INPUT));
-        addInput(createInputCentered<SDMonoPort>(mm2px(Vec(6.597, 119.319)), module, SDFormation::INPUT_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(9.85, 77.203)), module, SDFormation::TRIGGER_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.597, 104.61)), module, SDFormation::SPREADCV_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(17.78, 104.61)), module, SDFormation::TILTCV_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(28.963, 104.61)), module, SDFormation::RANDOMCV_INPUT));
+        addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.597, 119.319)), module, SDFormation::INPUT_INPUT));
 
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(17.78, 119.318)), module, SDFormation::OUTPUT_OUTPUT));
-        addOutput(createOutputCentered<SDPolyPort>(mm2px(Vec(28.963, 119.319)), module, SDFormation::REVERSE_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(17.78, 119.318)), module, SDFormation::OUTPUT_OUTPUT));
+        addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(28.963, 119.319)), module, SDFormation::REVERSE_OUTPUT));
     }
 };
 
