@@ -13,7 +13,8 @@
 #define NOTECOUNT 8
 #define NOTECOUNT_LEGACY 4
 #define HISTORYCOUNT 8
-#define MODCOUNT 4
+#define MODCOUNT 8
+#define MODOUTPUTCOUNT 4
 #define TRACKCOUNT 8
 #define TRACKCOUNT_LEGACY 4
 #define GATEPRESETCOUNT 16
@@ -342,9 +343,8 @@ struct SDOrcasHeartV2 : Module {
     int shifts[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int muted[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    float modCvs[MODCOUNT];
-    bool modGateOn[MODCOUNT] = { 0, 0, 0, 0 };
-    bool modGateChanged[MODCOUNT] = { 1, 1, 1, 1 };
+    float modCvs[MODCOUNT] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    bool modGate[MODCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     // engine state
 
     float getCombinedValue(int param, int input) {
@@ -500,12 +500,16 @@ struct SDOrcasHeartV2 : Module {
     }
 
     void updateMod() {
-        for (int i = 0; i < MODCOUNT; i++) modGateOn[i] = trackOn[i % (i < 4 ? TRACKCOUNT_LEGACY : TRACKCOUNT)];
+        for (int i = 0; i < TRACKCOUNT; i++) modGate[i] = trackOn[i] ? trackOn[i] : (phase[i] + i) & 1;
 
         modCvs[0] = totalWeight + weightOn[0];
-        modCvs[1] = weights[1] * (trackOn[3] + trackOn[2]) + weights[2] * (trackOn[0] + trackOn[2]);
-        modCvs[2] = weights[0] * (trackOn[2] + trackOn[1]) + weights[3] * (trackOn[0] + trackOn[3]);
-        modCvs[3] = weights[1] * (trackOn[1] + trackOn[2]) + weights[2] * (trackOn[2] + trackOn[3]) + weights[3] * (trackOn[3] + trackOn[2]);
+        modCvs[1] = weights[1] * (modGate[3] + modGate[2]) + weights[2] * (modGate[0] + modGate[2]);
+        modCvs[2] = weights[0] * (modGate[2] + modGate[1]) + weights[3] * (modGate[0] + modGate[3]);
+        modCvs[3] = weights[1] * (modGate[1] + modGate[2]) + weights[2] * (modGate[2] + modGate[3]) + weights[3] * (modGate[3] + modGate[2]);
+        modCvs[4] = totalWeight + weightOn[7];
+        modCvs[5] = weights[6] * (modGate[4] + modGate[5]) + weights[5] * (modGate[7] + modGate[5]);
+        modCvs[6] = weights[7] * (modGate[5] + modGate[6]) + weights[4] * (modGate[7] + modGate[4]);
+        modCvs[7] = weights[6] * (modGate[6] + modGate[5]) + weights[5] * (modGate[5] + modGate[4]) + weights[4] * (modGate[4] + modGate[3]);
 
         for (int i = 0; i < MODCOUNT; i++) modCvs[i] = (int(modCvs[i]) % 30) / 3.f;
     }
@@ -675,15 +679,20 @@ struct SDOrcasHeartV2 : Module {
         outputs[CV_1_OUTPUT].setChannels(NOTECOUNT);
         outputs[GATE_1_OUTPUT].setChannels(NOTECOUNT);
 
-        for (int i = 0; i < MODCOUNT; i++) {
-            outputs[MOD_GATE_1_OUTPUT + i].setVoltage(modGateOn[i] ? 10.f : 0.f);
-            outputs[MOD_GATE_1_OUTPUT].setVoltage(modGateOn[i] ? 10.f : 0.f, i);
+        for (int i = 0; i < MODOUTPUTCOUNT; i++) {
+            outputs[MOD_GATE_1_OUTPUT + i].setVoltage(modGate[i] ? 10.f : 0.f);
+            outputs[MOD_GATE_1_OUTPUT].setVoltage(modGate[i] ? 10.f : 0.f, i);
             
             outputs[MOD_CV_1_OUTPUT + i].setVoltage(modCvs[i]);
             outputs[MOD_CV_1_OUTPUT].setVoltage(modCvs[i], i);
         }
         
-        outputs[MOD_GATE_1_OUTPUT].setVoltage(MODCOUNT);
+        for (int i = MODOUTPUTCOUNT; i < MODCOUNT; i++) {
+            outputs[MOD_GATE_1_OUTPUT].setVoltage(modGate[i] ? 10.f : 0.f, i);
+            outputs[MOD_CV_1_OUTPUT].setVoltage(modCvs[i], i);
+        }
+        
+        outputs[MOD_GATE_1_OUTPUT].setChannels(MODCOUNT);
         outputs[MOD_CV_1_OUTPUT].setChannels(MODCOUNT);
 
         outputs[CLOCK_OUTPUT].setVoltage(clockOut.process(args.sampleTime) ? 10.f : 0.f);
