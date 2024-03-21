@@ -267,7 +267,8 @@ struct SDOrcasHeartV2 : Module {
         getParamQuantity(ROTATE_PARAM)->snapEnabled = true;
         configInput(ROTATE_INPUT, "Rotate");
 
-        configParam(XMOD_PARAM, 0.f, 1.f, 0.f, "Cross Modulation");
+        configParam(XMOD_PARAM, 0.f, 127.f, 0.f, "Cross Modulation");
+        getParamQuantity(XMOD_PARAM)->snapEnabled = true;
         configInput(XMOD_INPUT, "Cross Modulation");
 
         configOutput(CLOCK_OUTPUT, "Clock");
@@ -448,7 +449,7 @@ struct SDOrcasHeartV2 : Module {
         shift = round(getCombinedValue(SHIFT_PARAM, SHIFT_INPUT));
         space = round(getCombinedValue(SPACE_PARAM, SPACE_INPUT));
         rotate = round(getCombinedValue(ROTATE_PARAM, ROTATE_INPUT));
-        float xmod = getCombinedValue(XMOD_PARAM, XMOD_INPUT);
+        float xmod = getCombinedValue(XMOD_PARAM, XMOD_INPUT) / 127.f;
         algoX += round(xmod * outputs[CV_1_OUTPUT].getVoltage() * 12.8f);
         if (xmod > 0.8) rotate += round((xmod - 0.8) * outputs[CV_5_OUTPUT].getVoltage() * 1.6f);
         else if (xmod > 0.6) shift += round((xmod - 0.4) * outputs[CV_7_OUTPUT].getVoltage() * 1.6f);
