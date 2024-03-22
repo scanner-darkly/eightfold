@@ -23,7 +23,7 @@ For the most basic use:
 - use the knobs to change algorithm parameters to modify the sequence
 - use `MODULATION` outputs to modulate voice parameters (oscillator waveform / filter cutoff / etc)
 
-<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/easy_start_patch.png?raw=true" alt="quick start patch" width="633" height="287" />
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/easy_start_patch.jpg?raw=true" alt="quick start patch" width="506" height="230" />
 
 ### knob functions
 
