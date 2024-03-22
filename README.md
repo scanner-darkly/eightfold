@@ -17,10 +17,13 @@ it to sequence up to 8 voices and produce 8 modulation CVs and gates that can be
 For the most basic use:
 
 - connect `VOICES` CV outputs to 1V/Oct (pitch) oscillator inputs
-- connect `VOICES` gate outputs to a gate/trigger input on the oscillator (if it has one) or an envelope used to control a VCA the oscillator is going through
+- connect `VOICES` gate outputs to the envelopes that are used to control the VCAs the oscillators are going through
 - select scale notes - the white LED shows the currently selected scale
 - adjust sequencer speed with the `SPEED` knob
+- use the knobs to change algorithm parameters to modify the sequence
 - use `MODULATION` outputs to modulate voice parameters (oscillator waveform / filter cutoff / etc)
+
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/patch_easy_start.jpg?raw=true" alt="quick start patch" width="491" height="237" />
 
 ### knob functions
 
@@ -31,7 +34,7 @@ For the most basic use:
 |`TRANS`|transposition (1V/Oct)|
 |`GATE L`|voice gate length (sec)|
 |`VOICES`|number of voices|
-|`SPREAD`|spread voices in time domain (fraction of a step)|
+|`SPREAD`|spread voices across a step|
 |`ALGO X`|algorithm X parameter|
 |`ALGO Y`|algorithm Y parameter|
 |`SHIFT`|algorithm shift parameter|
@@ -72,7 +75,7 @@ The blue colour denotes polyphonic outputs - if you use Orca's Heart with a poly
 you can use a single cable for all 8 voices by connecting to CV/gate output 1. The polyphonic modulation outputs also produce 8 CVs/gates, if you need to use
 modulation CV/gate 5-8 with a non polyphonic module, connect output 1 to a [Split](https://library.vcvrack.com/Fundamental/Split) module.
 
-[Lines module](#lines) can help with visualizing the polyphonic outputs.
+[Lines module](#lines) can help with visualizing the polyphonic outputs.   
 
 ## formation
 
