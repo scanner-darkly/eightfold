@@ -186,7 +186,7 @@ struct SDOrcasHeartV2 : Module {
     SDOrcasHeartV2() {
         config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-        configLight(SCALE_A_LIGHT, "Scale A Selected TEST");
+        configLight(SCALE_A_LIGHT, "Scale A Selected");
         configLight(SCALE_B_LIGHT, "Scale B Selected");
         configButton(SCALE_PARAM, "Toggle Scales A/B/both");
         configInput(SCALE_INPUT, "Toggle Scales A/B");
