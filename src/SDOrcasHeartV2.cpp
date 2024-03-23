@@ -226,22 +226,22 @@ struct SDOrcasHeartV2 : Module {
         configInput(CLOCK_INPUT, "Clock");
         configInput(RESET_INPUT, "Reset");
 
-        configParam(SPEED_PARAM, 20.f, 2000.f, 400.f, "Speed");
+        speedParamQuantity = configParam(SPEED_PARAM, 0.f, 3.f, 0.f, "Speed", " BPM", 4.0f, 32.f, 0.f);
         getParamQuantity(SPEED_PARAM)->randomizeEnabled = false;
         configInput(SPEED_INPUT, "Speed");
 
-        configParam(LENGTH_PARAM, 1.f, 64.f, 8.f, "Length");
+        configParam(LENGTH_PARAM, 1.f, 64.f, 8.f, "Length", " steps");
         getParamQuantity(LENGTH_PARAM)->snapEnabled = true;
         configInput(LENGTH_INPUT, "Length");
 
-        configParam(TRANSPOSE_PARAM, -3.f, 3.f, 0.f, "Transpose");
+        configParam(TRANSPOSE_PARAM, -3.f, 3.f, 0.f, "Transpose", " V/Oct");
         getParamQuantity(TRANSPOSE_PARAM)->randomizeEnabled = false;
         configInput(TRANSPOSE_INPUT, "Transpose");
 
-        configParam(GATE_LEN_PARAM, 0.01f, 4.0f, 0.2f, "Gate Length");
+        configParam(GATE_LEN_PARAM, 0.01f, 4.0f, 0.2f, "Gate Length", " sec");
         configInput(GATE_LEN_INPUT, "Gate Length");
 
-        configParam(VOICES_PARAM, 1.f, 8.f, 8.f, "Voice Count");
+        configParam(VOICES_PARAM, 1.f, 8.f, 8.f, "Voice Count", " voice(s)");
         getParamQuantity(VOICES_PARAM)->snapEnabled = true;
         configInput(VOICES_INPUT, "Voice Count");
 
@@ -275,31 +275,31 @@ struct SDOrcasHeartV2 : Module {
         configOutput(CLOCK_OUTPUT, "Clock");
         configOutput(RESET_OUTPUT, "Reset");
         
-        configOutput(MOD_CV_1_OUTPUT, "Modulation CV #1");
-        configOutput(MOD_CV_2_OUTPUT, "Modulation CV #2");
-        configOutput(MOD_CV_3_OUTPUT, "Modulation CV #3");
-        configOutput(MOD_CV_4_OUTPUT, "Modulation CV #4");
-        configOutput(MOD_GATE_1_OUTPUT, "Modulation Gate #1");
-        configOutput(MOD_GATE_2_OUTPUT, "Modulation Gate #2");
-        configOutput(MOD_GATE_3_OUTPUT, "Modulation Gate #3");
-        configOutput(MOD_GATE_4_OUTPUT, "Modulation Gate #4");
+        configOutput(MOD_CV_1_OUTPUT, "Modulation CV 1 / Poly");
+        configOutput(MOD_CV_2_OUTPUT, "Modulation CV 2");
+        configOutput(MOD_CV_3_OUTPUT, "Modulation CV 3");
+        configOutput(MOD_CV_4_OUTPUT, "Modulation CV 4");
+        configOutput(MOD_GATE_1_OUTPUT, "Modulation Gate 1 / Poly");
+        configOutput(MOD_GATE_2_OUTPUT, "Modulation Gate 2");
+        configOutput(MOD_GATE_3_OUTPUT, "Modulation Gate 3");
+        configOutput(MOD_GATE_4_OUTPUT, "Modulation Gate 4");
 
-        configOutput(CV_1_OUTPUT, "Note CV #1 1V/Oct");
-        configOutput(CV_2_OUTPUT, "Note CV #2 1V/Oct");
-        configOutput(CV_3_OUTPUT, "Note CV #3 1V/Oct");
-        configOutput(CV_4_OUTPUT, "Note CV #4 1V/Oct");
-        configOutput(CV_5_OUTPUT, "Note CV #5 1V/Oct");
-        configOutput(CV_6_OUTPUT, "Note CV #6 1V/Oct");
-        configOutput(CV_7_OUTPUT, "Note CV #7 1V/Oct");
-        configOutput(CV_8_OUTPUT, "Note CV #8 1V/Oct");
-        configOutput(GATE_1_OUTPUT, "Note Gate #1");
-        configOutput(GATE_2_OUTPUT, "Note Gate #2");
-        configOutput(GATE_3_OUTPUT, "Note Gate #3");
-        configOutput(GATE_4_OUTPUT, "Note Gate #4");
-        configOutput(GATE_5_OUTPUT, "Note Gate #5");
-        configOutput(GATE_6_OUTPUT, "Note Gate #6");
-        configOutput(GATE_7_OUTPUT, "Note Gate #7");
-        configOutput(GATE_8_OUTPUT, "Note Gate #8");
+        configOutput(CV_1_OUTPUT, "Note CV 1 / Poly");
+        configOutput(CV_2_OUTPUT, "Note CV 2");
+        configOutput(CV_3_OUTPUT, "Note CV 3");
+        configOutput(CV_4_OUTPUT, "Note CV 4");
+        configOutput(CV_5_OUTPUT, "Note CV 5");
+        configOutput(CV_6_OUTPUT, "Note CV 6");
+        configOutput(CV_7_OUTPUT, "Note CV 7");
+        configOutput(CV_8_OUTPUT, "Note CV 8");
+        configOutput(GATE_1_OUTPUT, "Note Gate 1 / Poly");
+        configOutput(GATE_2_OUTPUT, "Note Gate 2");
+        configOutput(GATE_3_OUTPUT, "Note Gate 3");
+        configOutput(GATE_4_OUTPUT, "Note Gate 4");
+        configOutput(GATE_5_OUTPUT, "Note Gate 5");
+        configOutput(GATE_6_OUTPUT, "Note Gate 6");
+        configOutput(GATE_7_OUTPUT, "Note Gate 7");
+        configOutput(GATE_8_OUTPUT, "Note Gate 8");
         
         outputs[CV_1_OUTPUT].setChannels(NOTECOUNT);
         outputs[GATE_1_OUTPUT].setChannels(NOTECOUNT);
@@ -315,9 +315,12 @@ struct SDOrcasHeartV2 : Module {
 
     dsp::SchmittTrigger clockIn, resetIn, scaleSwitchTrig, scaleInputTrig;
     dsp::PulseGenerator clockOut, resetOut;
+    
+    ParamQuantity* speedParamQuantity;
 
     int length, voices, algoX, algoY, shift, rotate, space;
-    float speed, transpose, gateLength, spread;
+    double speed;
+    float transpose, gateLength, spread;
     
     int scales[SCALECOUNT + 1][SCALELEN] = {};
     int scaleCount[SCALECOUNT + 1] = {};
@@ -433,8 +436,8 @@ struct SDOrcasHeartV2 : Module {
     }
 
     void updateParameters() {
-        int speedBPM = round(getCombinedValue(SPEED_PARAM, SPEED_INPUT));
-        speed = 60.f / speedBPM;
+        int speedBPM = round(inputs[SPEED_INPUT].getVoltage() * (2048 - 32) / 10.f + speedParamQuantity->getDisplayValue());
+        speed = 60.0 / speedBPM;
         length = round(getCombinedValue(LENGTH_PARAM, LENGTH_INPUT));
         transpose = getCombinedValue(TRANSPOSE_PARAM, TRANSPOSE_INPUT);
         float gateLen = getCombinedValue(GATE_LEN_PARAM, GATE_LEN_INPUT);
