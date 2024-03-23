@@ -156,7 +156,7 @@ struct SDFormation : Module {
         if (randomsJ) {
             for (int i = 0; i < SIZE; i++) {
                 json_t* randomJ = json_array_get(randomsJ, i);
-                if (randomJ) randoms[i] = json_number_value(randomJ);
+                if (randomJ) randoms[i] = json_real_value(randomJ);
             }
         }
     }

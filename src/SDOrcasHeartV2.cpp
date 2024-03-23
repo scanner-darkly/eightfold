@@ -65,6 +65,8 @@ struct SDOrcasHeartV2 : Module {
         {1, 0, 0, 1,   0, 1, 1, 0,   0, 1, 0, 0}
     };
     
+    const int weights[TRACKCOUNT] = { 1, 2, 4, 7, 5, 3, 11, 13 };
+    
     enum ParamIds {
         SCALE_PARAM,
         SCALE_A_OCT_PARAM,
@@ -315,9 +317,10 @@ struct SDOrcasHeartV2 : Module {
 
     dsp::SchmittTrigger clockIn, resetIn, scaleSwitchTrig, scaleInputTrig;
     dsp::PulseGenerator clockOut, resetOut;
-    
     ParamQuantity* speedParamQuantity;
 
+    float internalClock = 2.f, clockInterval, clockIntervalCounter;
+    
     int length, voices, algoX, algoY, shift, rotate, space;
     double speed;
     float transpose, gateLength, spread;
@@ -326,25 +329,23 @@ struct SDOrcasHeartV2 : Module {
     int scaleCount[SCALECOUNT + 1] = {};
     int scale = 0, scaleAPreset, scaleBPreset;
 
-    float internalClock = 2.f, clockInterval, clockIntervalCounter;
-    
     // engine state
     int globalCounter = 0;
+    int totalWeight = 0;
     int counter[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int divisor[TRACKCOUNT] = { 1, 1, 1, 1, 1, 1, 1, 1 };
     int phase[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    int weights[TRACKCOUNT] = { 1, 2, 4, 7, 5, 3, 11, 13 };
     int trackOn[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int weightOn[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    int totalWeight = 0;
 
     int notes[NOTECOUNT][HISTORYCOUNT];
     bool gateOn[NOTECOUNT][HISTORYCOUNT];
     bool gateChanged[NOTECOUNT][HISTORYCOUNT];
+
     float gateTimer[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     bool gateTriggered[NOTECOUNT];
-    int shifts[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int muted[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    int shifts[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
     float modCvs[MODCOUNT] { 0, 0, 0, 0, 0, 0, 0, 0 };
     bool modGate[MODCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -470,7 +471,7 @@ struct SDOrcasHeartV2 : Module {
             phase[i] = ((algoX & (0b11 << i)) + i) % divisor[i];
         }
 
-        for (int i = 0; i < TRACKCOUNT; i++) shifts[i] = getCombinedValue(SHIFT_PARAM, SHIFT_INPUT);
+        for (int i = 0; i < NOTECOUNT; i++) shifts[i] = getCombinedValue(SHIFT_PARAM, SHIFT_INPUT);
     }
 
     void updateCounters() {
@@ -704,18 +705,212 @@ struct SDOrcasHeartV2 : Module {
 
     json_t* dataToJson() override {
         json_t* rootJ = json_object();
-        json_object_set_new(rootJ, "selected_scale", json_integer(scale));
+        json_t* arrayJ;
+        
+        json_object_set_new(rootJ, "selectedScale", json_integer(scale));
+
+        json_object_set_new(rootJ, "globalCounter", json_integer(globalCounter));
+        json_object_set_new(rootJ, "totalWeight", json_integer(totalWeight));
+        
+        arrayJ = json_array();
+        for (int i = 0; i < TRACKCOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(counter[i]));
+        json_object_set_new(rootJ, "counter", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < TRACKCOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(divisor[i]));
+        json_object_set_new(rootJ, "divisor", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < TRACKCOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(phase[i]));
+        json_object_set_new(rootJ, "phase", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < TRACKCOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(trackOn[i]));
+        json_object_set_new(rootJ, "trackOn", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < TRACKCOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(weightOn[i]));
+        json_object_set_new(rootJ, "weightOn", arrayJ);
+        
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_array();
+            for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(notes[i][h]));
+            json_object_set_new(rootJ, ("notes" + std::to_string(h)).c_str(), arrayJ);
+        }
+
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_array();
+            for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_boolean(gateOn[i][h]));
+            json_object_set_new(rootJ, ("gateOn" + std::to_string(h)).c_str(), arrayJ);
+        }
+
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_array();
+            for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_boolean(gateChanged[i][h]));
+            json_object_set_new(rootJ, ("gateChanged" + std::to_string(h)).c_str(), arrayJ);
+        }
+
+        arrayJ = json_array();
+        for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_real(gateTimer[i]));
+        json_object_set_new(rootJ, "gateTimer", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_boolean(gateTriggered[i]));
+        json_object_set_new(rootJ, "gateTriggered", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(muted[i]));
+        json_object_set_new(rootJ, "muted", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < NOTECOUNT; i++) json_array_insert_new(arrayJ, i, json_integer(shifts[i]));
+        json_object_set_new(rootJ, "shifts", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < MODCOUNT; i++) json_array_insert_new(arrayJ, i, json_real(modCvs[i]));
+        json_object_set_new(rootJ, "modCvs", arrayJ);
+        
+        arrayJ = json_array();
+        for (int i = 0; i < MODCOUNT; i++) json_array_insert_new(arrayJ, i, json_boolean(modGate[i]));
+        json_object_set_new(rootJ, "modGate", arrayJ);
+
         return rootJ;
     }
 
     void dataFromJson(json_t* rootJ) override {
-        json_t* scaleJ = json_object_get(rootJ, "selected_scale");
-        if (scaleJ) {
-            scale = json_integer_value(scaleJ);
+        json_t* objectJ;
+        json_t* arrayJ;
+        
+        objectJ = json_object_get(rootJ, "selectedScale");
+        if (objectJ) {
+            scale = json_integer_value(objectJ);
             scaleAPreset = round(getCombinedValue(SCALE_A_PARAM, SCALE_A_INPUT)) - 1;
             scaleBPreset = round(getCombinedValue(SCALE_B_PARAM, SCALE_B_INPUT)) - 1;
             updateScaleLeds();
             updateScales();
+        }
+        
+        objectJ = json_object_get(rootJ, "globalCounter");
+        if (objectJ) globalCounter = json_integer_value(objectJ);
+        objectJ = json_object_get(rootJ, "totalWeight");
+        if (objectJ) totalWeight = json_integer_value(objectJ);
+        
+        arrayJ = json_object_get(rootJ, "counter");
+        if (arrayJ) {
+            for (int i = 0; i < TRACKCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) counter[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "divisor");
+        if (arrayJ) {
+            for (int i = 0; i < TRACKCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) divisor[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "phase");
+        if (arrayJ) {
+            for (int i = 0; i < TRACKCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) phase[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "trackOn");
+        if (arrayJ) {
+            for (int i = 0; i < TRACKCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) trackOn[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "weightOn");
+        if (arrayJ) {
+            for (int i = 0; i < TRACKCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) weightOn[i] = json_integer_value(objectJ);
+            }
+        }
+
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_object_get(rootJ, ("notes" + std::to_string(h)).c_str());
+            if (arrayJ) {
+                for (int i = 0; i < NOTECOUNT; i++) {
+                    objectJ = json_array_get(arrayJ, i);
+                    if (objectJ) notes[i][h] = json_integer_value(objectJ);
+                }
+            }
+        }
+
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_object_get(rootJ, ("gateOn" + std::to_string(h)).c_str());
+            if (arrayJ) {
+                for (int i = 0; i < NOTECOUNT; i++) {
+                    objectJ = json_array_get(arrayJ, i);
+                    if (objectJ) gateOn[i][h] = json_boolean_value(objectJ);
+                }
+            }
+        }
+
+        for (int h = 0; h < HISTORYCOUNT; h++) {
+            arrayJ = json_object_get(rootJ, ("gateChanged" + std::to_string(h)).c_str());
+            if (arrayJ) {
+                for (int i = 0; i < NOTECOUNT; i++) {
+                    objectJ = json_array_get(arrayJ, i);
+                    if (objectJ) gateChanged[i][h] = json_boolean_value(objectJ);
+                }
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "gateTimer");
+        if (arrayJ) {
+            for (int i = 0; i < NOTECOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) gateTimer[i] = json_real_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "gateTriggered");
+        if (arrayJ) {
+            for (int i = 0; i < NOTECOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) gateTriggered[i] = json_boolean_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "muted");
+        if (arrayJ) {
+            for (int i = 0; i < NOTECOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) muted[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "shifts");
+        if (arrayJ) {
+            for (int i = 0; i < NOTECOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) shifts[i] = json_integer_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "modCvs");
+        if (arrayJ) {
+            for (int i = 0; i < MODCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) modCvs[i] = json_real_value(objectJ);
+            }
+        }
+
+        arrayJ = json_object_get(rootJ, "modGate");
+        if (arrayJ) {
+            for (int i = 0; i < MODCOUNT; i++) {
+                objectJ = json_array_get(arrayJ, i);
+                if (objectJ) modGate[i] = json_boolean_value(objectJ);
+            }
         }
     }
 };
