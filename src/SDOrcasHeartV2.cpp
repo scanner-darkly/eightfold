@@ -194,8 +194,8 @@ struct SDOrcasHeartV2 : Module {
         configSwitch(SCALE_B_OCT_PARAM, 0, 1, 0, "Octave B", { "Down", "Up" });
         configInput(SCALE_A_OCT_INPUT, "+ Octave A");
         configInput(SCALE_B_OCT_INPUT, "+ Octave B");
-        configSwitch(SCALE_A_LOCK_PARAM, 0, 1, 1, "Enable Scale Presets A", { "Disabled", "Enabled" });
-        configSwitch(SCALE_B_LOCK_PARAM, 0, 1, 1, "Enable Scale Presets B", { "Disabled", "Enabled" });
+        configSwitch(SCALE_A_LOCK_PARAM, 0, 1, 0, "Enable Scale Presets A", { "Disabled", "Enabled" });
+        configSwitch(SCALE_B_LOCK_PARAM, 0, 1, 0, "Enable Scale Presets B", { "Disabled", "Enabled" });
         getParamQuantity(SCALE_A_LOCK_PARAM)->randomizeEnabled = false;
         getParamQuantity(SCALE_B_LOCK_PARAM)->randomizeEnabled = false;
         configParam(SCALE_A_PARAM, 1.f, SCALEPRESETCOUNT, 1.f, "Scale Preset A");
@@ -440,7 +440,7 @@ struct SDOrcasHeartV2 : Module {
         int speedBPM = round(inputs[SPEED_INPUT].getVoltage() * (2048 - 32) / 10.f + speedParamQuantity->getDisplayValue());
         speed = 60.0 / speedBPM;
         length = round(getCombinedValue(LENGTH_PARAM, LENGTH_INPUT));
-        transpose = getCombinedValue(TRANSPOSE_PARAM, TRANSPOSE_INPUT);
+        transpose = inputs[TRANSPOSE_INPUT].getVoltage() + params[TRANSPOSE_PARAM].getValue();
         float gateLen = getCombinedValue(GATE_LEN_PARAM, GATE_LEN_INPUT);
         gateLength = speed * gateLen;
         spread = getCombinedValue(SPREAD_PARAM, SPREAD_INPUT);
