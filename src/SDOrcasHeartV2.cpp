@@ -217,10 +217,10 @@ struct SDOrcasHeartV2 : Module {
             configSwitch(scaleOffset + 4, 0, 1, i == 0, "E", { "Off", "On" });
             configSwitch(scaleOffset + 5, 0, 1, 0, "F", { "Off", "On" });
             configSwitch(scaleOffset + 6, 0, 1, 0, "F#", { "Off", "On" });
-            configSwitch(scaleOffset + 7, 0, 1, 0, "G", { "Off", "On" });
+            configSwitch(scaleOffset + 7, 0, 1, i == 0, "G", { "Off", "On" });
 
             configSwitch(scaleOffset + 8, 0, 1, 0, "G#", { "Off", "On" });
-            configSwitch(scaleOffset + 9, 0, 1, 0, "A", { "Off", "On" });
+            configSwitch(scaleOffset + 9, 0, 1, i == 0, "A", { "Off", "On" });
             configSwitch(scaleOffset + 10, 0, 1, 0, "A#", { "Off", "On" });
             configSwitch(scaleOffset + 11, 0, 1, 0, "B", { "Off", "On" });
         }
@@ -240,7 +240,7 @@ struct SDOrcasHeartV2 : Module {
         getParamQuantity(TRANSPOSE_PARAM)->randomizeEnabled = false;
         configInput(TRANSPOSE_INPUT, "Transpose");
 
-        configParam(GATE_LEN_PARAM, 0.01f, 4.0f, 0.2f, "Gate Length", " sec");
+        configParam(GATE_LEN_PARAM, 0.01f, 2.0f, 0.2f, "Gate Length", " sec");
         configInput(GATE_LEN_INPUT, "Gate Length");
 
         configParam(VOICES_PARAM, 1.f, 8.f, 8.f, "Voice Count", " voice(s)");
