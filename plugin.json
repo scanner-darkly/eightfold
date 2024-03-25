@@ -7,14 +7,14 @@
   "author": "scanner darkly",
   "authorUrl": "https://github.com/scanner-darkly",
   "pluginUrl": "https://github.com/scanner-darkly/eightfold",
-  "manualUrl": "https://github.com/scanner-darkly/eightfold",
+  "manualUrl": "https://github.com/scanner-darkly/eightfold/wiki",
   "sourceUrl": "https://github.com/scanner-darkly/eightfold",
   "modules": [
     {
       "slug": "SDOrcasHeartV2",
       "name": "orca's heart v2",
       "description": "eight-voice algorithmic sequence generator",
-      "manualUrl": "https://github.com/scanner-darkly/eightfold?tab=readme-ov-file#orcas-heart-v2",
+      "manualUrl": "https://github.com/scanner-darkly/eightfold#orcas-heart-v2",
       "tags": [
         "Arpeggiator",
         "Polyphonic",
@@ -25,7 +25,7 @@
       "slug": "SDLines",
       "name": "lines",
       "description": "polyphonic voltage visualizer",
-      "manualUrl": "https://github.com/scanner-darkly/eightfold?tab=readme-ov-file#lines",
+      "manualUrl": "https://github.com/scanner-darkly/eightfold#lines",
       "tags": [
         "Polyphonic",
         "Visual"
@@ -35,7 +35,7 @@
       "slug": "SDFormation",
       "name": "formation",
       "description": "mono to polyphonic voltage converter",
-      "manualUrl": "https://github.com/scanner-darkly/eightfold?tab=readme-ov-file#formation",
+      "manualUrl": "https://github.com/scanner-darkly/eightfold#formation",
       "tags": [
         "Polyphonic",
         "Utility"
