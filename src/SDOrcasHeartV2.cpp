@@ -209,18 +209,18 @@ struct SDOrcasHeartV2 : Module {
         for (int i = 0; i < SCALECOUNT; i++) {
             scaleOffset = SCALE_1_PARAM + i * SCALELEN;
 
-            configSwitch(scaleOffset + 0, 0, 1, i == 0, "C", { "Off", "On" });
+            configSwitch(scaleOffset + 0, 0, 1, 1, "C", { "Off", "On" });
             configSwitch(scaleOffset + 1, 0, 1, 0, "C#", { "Off", "On" });
-            configSwitch(scaleOffset + 2, 0, 1, i == 0, "D", { "Off", "On" });
+            configSwitch(scaleOffset + 2, 0, 1, 1, "D", { "Off", "On" });
             configSwitch(scaleOffset + 3, 0, 1, 0, "D#", { "Off", "On" });
 
-            configSwitch(scaleOffset + 4, 0, 1, i == 0, "E", { "Off", "On" });
+            configSwitch(scaleOffset + 4, 0, 1, 1, "E", { "Off", "On" });
             configSwitch(scaleOffset + 5, 0, 1, 0, "F", { "Off", "On" });
             configSwitch(scaleOffset + 6, 0, 1, 0, "F#", { "Off", "On" });
-            configSwitch(scaleOffset + 7, 0, 1, i == 0, "G", { "Off", "On" });
+            configSwitch(scaleOffset + 7, 0, 1, 1, "G", { "Off", "On" });
 
             configSwitch(scaleOffset + 8, 0, 1, 0, "G#", { "Off", "On" });
-            configSwitch(scaleOffset + 9, 0, 1, i == 0, "A", { "Off", "On" });
+            configSwitch(scaleOffset + 9, 0, 1, 1, "A", { "Off", "On" });
             configSwitch(scaleOffset + 10, 0, 1, 0, "A#", { "Off", "On" });
             configSwitch(scaleOffset + 11, 0, 1, 0, "B", { "Off", "On" });
         }
@@ -228,7 +228,7 @@ struct SDOrcasHeartV2 : Module {
         configInput(CLOCK_INPUT, "Clock");
         configInput(RESET_INPUT, "Reset");
 
-        speedParamQuantity = configParam(SPEED_PARAM, 0.f, 3.f, 0.f, "Speed", " BPM", 4.0f, 32.f, 0.f);
+        speedParamQuantity = configParam(SPEED_PARAM, 0.f, 3.f, 1.f, "Speed", " BPM", 4.0f, 32.f, 0.f);
         getParamQuantity(SPEED_PARAM)->randomizeEnabled = false;
         configInput(SPEED_INPUT, "Speed");
 
@@ -315,6 +315,8 @@ struct SDOrcasHeartV2 : Module {
         clockIntervalCounter = clockInterval = 0;
     }
 
+    int scaleSwitchMode = 0;
+    
     dsp::SchmittTrigger clockIn, resetIn, scaleSwitchTrig, scaleInputTrig;
     dsp::PulseGenerator clockOut, resetOut;
     ParamQuantity* speedParamQuantity;
@@ -384,8 +386,12 @@ struct SDOrcasHeartV2 : Module {
             scale = (scale + 1) % (SCALECOUNT + 1);
         }
         
-        if (scaleInputTrig.process(rescale(inputs[SCALE_INPUT].getVoltage(), 0.1f, 2.f, 0.f, 1.f))) {
-            scale = scale ? 0 : 1;
+        if (scaleSwitchMode == 0) { // trigger mode
+            if (scaleInputTrig.process(rescale(inputs[SCALE_INPUT].getVoltage(), 0.1f, 2.f, 0.f, 1.f))) {
+                scale = scale ? 0 : 1;
+            }
+        } else { // gate mode
+            scale = inputs[SCALE_INPUT].getVoltage() ? 1 : 0;
         }
         
         updateScaleLeds();
@@ -672,6 +678,9 @@ struct SDOrcasHeartV2 : Module {
                     g = gateTimer[n] > 0 ? 10 : 0;
                 }
             }
+            
+            // prevent feedback if a note CV is connected to TRANS
+            if (cv > 10.f) cv = 10.f;
 
             outputs[CV_1_OUTPUT + n].setVoltage(cv);
             outputs[GATE_1_OUTPUT + n].setVoltage(g);
@@ -707,6 +716,7 @@ struct SDOrcasHeartV2 : Module {
         json_t* rootJ = json_object();
         json_t* arrayJ;
         
+        json_object_set_new(rootJ, "scaleSwitchMode", json_integer(scaleSwitchMode));
         json_object_set_new(rootJ, "selectedScale", json_integer(scale));
 
         json_object_set_new(rootJ, "globalCounter", json_integer(globalCounter));
@@ -781,6 +791,9 @@ struct SDOrcasHeartV2 : Module {
         json_t* objectJ;
         json_t* arrayJ;
         
+        objectJ = json_object_get(rootJ, "scaleSwitchMode");
+        if (objectJ) scaleSwitchMode = json_integer_value(objectJ);
+
         objectJ = json_object_get(rootJ, "selectedScale");
         if (objectJ) {
             scale = json_integer_value(objectJ);
@@ -1013,6 +1026,12 @@ struct SDOrcasHeartWidget : ModuleWidget {
 
         addChild(createLightCentered<MediumLight<SDWhiteLight>>(mm2px(Vec(20.284, 16.863)), module, SDOrcasHeartV2::SCALE_A_LIGHT));
         addChild(createLightCentered<MediumLight<SDWhiteLight>>(mm2px(Vec(20.284, 32.646)), module, SDOrcasHeartV2::SCALE_B_LIGHT));
+    }
+
+    void appendContextMenu(Menu* menu) override {
+        SDOrcasHeartV2* module = getModule<SDOrcasHeartV2>();
+        menu->addChild(new MenuSeparator);
+        menu->addChild(createIndexPtrSubmenuItem("Scale Switch Mode", {"Trigger", "Gate"}, &module->scaleSwitchMode));
     }
 };
 
