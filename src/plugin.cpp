@@ -16,4 +16,5 @@ void init(Plugin *p) {
 	p->addModel(modelSDOrcasHeartV2);
 	p->addModel(modelSDFormation);
 	p->addModel(modelSDLines);
+	p->addModel(modelSDTransgate);
 }
