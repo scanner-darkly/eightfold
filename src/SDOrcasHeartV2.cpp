@@ -681,6 +681,7 @@ struct SDOrcasHeartV2 : Module {
             
             // prevent feedback if a note CV is connected to TRANS
             if (cv > 10.f) cv = 10.f;
+            else if (cv < -10.f) cv = -10.f;
 
             outputs[CV_1_OUTPUT + n].setVoltage(cv);
             outputs[GATE_1_OUTPUT + n].setVoltage(g);
