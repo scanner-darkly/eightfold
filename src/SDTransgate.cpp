@@ -124,14 +124,14 @@ struct SDTransgateWidget : ModuleWidget {
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/SDTransgate.svg")));
 
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 13.126)), module, SDTransgate::TRANS1_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 24.148)), module, SDTransgate::TRANS2_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 35.17)), module, SDTransgate::TRANS3_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 46.192)), module, SDTransgate::TRANS4_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 57.214)), module, SDTransgate::TRANS5_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 68.236)), module, SDTransgate::TRANS6_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 79.258)), module, SDTransgate::TRANS7_PARAM));
-        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(17.836, 90.28)), module, SDTransgate::TRANS8_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 13.126)), module, SDTransgate::TRANS1_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 24.148)), module, SDTransgate::TRANS2_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 35.17)), module, SDTransgate::TRANS3_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 46.192)), module, SDTransgate::TRANS4_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 57.214)), module, SDTransgate::TRANS5_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 68.236)), module, SDTransgate::TRANS6_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 79.258)), module, SDTransgate::TRANS7_PARAM));
+        addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 90.28)), module, SDTransgate::TRANS8_PARAM));
         addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.617, 101.089)), module, SDTransgate::ALL_ON_PARAM));
 
         addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.652, 13.126)), module, SDTransgate::GATE1_INPUT));
@@ -147,14 +147,14 @@ struct SDTransgateWidget : ModuleWidget {
 
         addOutput(createOutputCentered<SDPolyOutPort>(mm2px(Vec(17.836, 119.318)), module, SDTransgate::OUTPUT_OUTPUT));
 
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 13.126)), module, SDTransgate::GATEON1_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 24.148)), module, SDTransgate::GATEON2_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 35.17)), module, SDTransgate::GATEON3_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 46.192)), module, SDTransgate::GATEON4_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 57.214)), module, SDTransgate::GATEON5_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 68.236)), module, SDTransgate::GATEON6_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 79.258)), module, SDTransgate::GATEON7_LIGHT));
-        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.054, 90.28)), module, SDTransgate::GATEON8_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 13.126)), module, SDTransgate::GATEON1_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 24.148)), module, SDTransgate::GATEON2_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 35.17)), module, SDTransgate::GATEON3_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 46.192)), module, SDTransgate::GATEON4_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 57.214)), module, SDTransgate::GATEON5_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 68.236)), module, SDTransgate::GATEON6_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 79.258)), module, SDTransgate::GATEON7_LIGHT));
+        addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 90.28)), module, SDTransgate::GATEON8_LIGHT));
     }
 };
 
