@@ -50,6 +50,16 @@
         "Polyphonic",
         "Utility"
       ]
+    },
+    {
+      "slug": "SDComparator",
+      "name": "comparator",
+      "description": "polyphonic comparator",
+      "manualUrl": "https://github.com/scanner-darkly/eightfold#comparator",
+      "tags": [
+        "Polyphonic",
+        "Utility"
+      ]
     }
   ]
 }

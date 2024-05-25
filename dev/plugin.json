@@ -43,6 +43,12 @@
       "name": "SDTransgate",
       "description": "",
       "tags": []
+    },
+    {
+      "slug": "SDComparator",
+      "name": "SDComparator",
+      "description": "",
+      "tags": []
     }
   ]
 }

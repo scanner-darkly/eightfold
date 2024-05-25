@@ -17,4 +17,5 @@ void init(Plugin *p) {
 	p->addModel(modelSDFormation);
 	p->addModel(modelSDLines);
 	p->addModel(modelSDTransgate);
+	p->addModel(modelSDComparator);
 }
