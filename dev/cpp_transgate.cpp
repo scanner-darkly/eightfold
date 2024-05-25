@@ -85,7 +85,7 @@ struct SDTransgateWidget : ModuleWidget {
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 68.236)), module, SDTransgate::TRANS6_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 79.258)), module, SDTransgate::TRANS7_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(19.128, 90.28)), module, SDTransgate::TRANS8_PARAM));
-        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.617, 101.089)), module, SDTransgate::ALL_ON_PARAM));
+        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.541, 101.089)), module, SDTransgate::ALL_ON_PARAM));
 
         addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.652, 13.126)), module, SDTransgate::GATE1_INPUT));
         addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.652, 24.148)), module, SDTransgate::GATE2_INPUT));

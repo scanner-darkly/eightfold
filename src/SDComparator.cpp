@@ -13,7 +13,7 @@ struct SDComparator : Module {
         LEVEL6_PARAM,
         LEVEL7_PARAM,
         LEVEL8_PARAM,
-        MODE_PARAM,
+        DOT_PARAM,
         PARAMS_LEN
     };
     enum InputId {
@@ -57,8 +57,8 @@ struct SDComparator : Module {
         configParam(LEVEL7_PARAM, -10.f, 10.f, 0.f, "");
         configParam(LEVEL8_PARAM, -10.f, 10.f, 0.f, "");
         
-        configSwitch(MODE_PARAM, 0.0, 1.0, 0.0, "Mode", {"Dot", "Bar"});
-        getParamQuantity(MODE_PARAM)->randomizeEnabled = false;
+        configSwitch(DOT_PARAM, 0.0, 1.0, 0.0, "Dot Mode", {"On", "Off"});
+        getParamQuantity(DOT_PARAM)->randomizeEnabled = false;
         
         configInput(LEVELS_INPUT, "Threshold Levels");
         configInput(INPUT_INPUT, "Input");
@@ -104,7 +104,7 @@ struct SDComparator : Module {
             }
         }
         
-        if (params[MODE_PARAM].getValue() == 1) { // dot
+        if (params[DOT_PARAM].getValue() == 1) { // dot
             for (int i = 0; i < CHANNEL_COUNT; i++) {
                 lights[GATEON1_LIGHT + i].setBrightness(i == highest_index ? 1.f : 0.f);
                 outputs[GATE1_OUTPUT + i].setVoltage(i == highest_index ? 10.f : 0.f);
@@ -136,7 +136,7 @@ struct SDComparatorWidget : ModuleWidget {
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 68.236)), module, SDComparator::LEVEL6_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 79.258)), module, SDComparator::LEVEL7_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 90.28)), module, SDComparator::LEVEL8_PARAM));
-        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.617, 101.089)), module, SDComparator::MODE_PARAM));
+        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.541, 101.089)), module, SDComparator::DOT_PARAM));
 
         addInput(createInputCentered<SDPolyInPort>(mm2px(Vec(6.651, 104.61)), module, SDComparator::LEVELS_INPUT));
         addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.651, 119.319)), module, SDComparator::INPUT_INPUT));

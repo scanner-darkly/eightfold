@@ -11,7 +11,7 @@ struct SDComparator : Module {
         LEVEL6_PARAM,
         LEVEL7_PARAM,
         LEVEL8_PARAM,
-        MODE_PARAM,
+        DOT_PARAM,
         PARAMS_LEN
     };
     enum InputId {
@@ -53,7 +53,7 @@ struct SDComparator : Module {
         configParam(LEVEL6_PARAM, 0.f, 1.f, 0.f, "");
         configParam(LEVEL7_PARAM, 0.f, 1.f, 0.f, "");
         configParam(LEVEL8_PARAM, 0.f, 1.f, 0.f, "");
-        configParam(MODE_PARAM, 0.f, 1.f, 0.f, "");
+        configParam(DOT_PARAM, 0.f, 1.f, 0.f, "");
         configInput(LEVELS_INPUT, "");
         configInput(INPUT_INPUT, "");
         configOutput(GATE1_OUTPUT, "");
@@ -85,7 +85,7 @@ struct SDComparatorWidget : ModuleWidget {
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 68.236)), module, SDComparator::LEVEL6_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 79.258)), module, SDComparator::LEVEL7_PARAM));
         addParam(createParamCentered<SDSmallestKnob>(mm2px(Vec(6.271, 90.28)), module, SDComparator::LEVEL8_PARAM));
-        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.617, 101.089)), module, SDComparator::MODE_PARAM));
+        addParam(createParam<SDTwoSwitch>(mm2px(Vec(15.541, 101.089)), module, SDComparator::DOT_PARAM));
 
         addInput(createInputCentered<SDPolyInPort>(mm2px(Vec(6.651, 104.61)), module, SDComparator::LEVELS_INPUT));
         addInput(createInputCentered<SDMonoInPort>(mm2px(Vec(6.651, 119.319)), module, SDComparator::INPUT_INPUT));
