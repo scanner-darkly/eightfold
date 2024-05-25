@@ -57,21 +57,22 @@ struct SDTransgate : Module {
         configParam(TRANS7_PARAM, -12.f, 12.f, 0.f, "Transpose 7");
         configParam(TRANS8_PARAM, -12.f, 12.f, 0.f, "Transpose 8");
         
+        configSwitch(ALL_ON_PARAM, 0.0, 1.0, 0.0, "All Gates On", {"On", "Off"});
+        getParamQuantity(ALL_ON_PARAM)->randomizeEnabled = false;
+        
         for (int i = 0; i < CHANNEL_COUNT; i++) {
             getParamQuantity(TRANS1_PARAM + i)->snapEnabled = true;
         }
 
-        configLight(GATEON1_LIGHT, "Gate 1 On");
-        configLight(GATEON2_LIGHT, "Gate 2 On");
-        configLight(GATEON3_LIGHT, "Gate 3 On");
-        configLight(GATEON4_LIGHT, "Gate 4 On");
-        configLight(GATEON5_LIGHT, "Gate 5 On");
-        configLight(GATEON6_LIGHT, "Gate 6 On");
-        configLight(GATEON7_LIGHT, "Gate 7 On");
-        configLight(GATEON8_LIGHT, "Gate 8 On");
+        configLight(GATEON1_LIGHT, "Gate 1");
+        configLight(GATEON2_LIGHT, "Gate 2");
+        configLight(GATEON3_LIGHT, "Gate 3");
+        configLight(GATEON4_LIGHT, "Gate 4");
+        configLight(GATEON5_LIGHT, "Gate 5");
+        configLight(GATEON6_LIGHT, "Gate 6");
+        configLight(GATEON7_LIGHT, "Gate 7");
+        configLight(GATEON8_LIGHT, "Gate 8");
 
-        configSwitch(ALL_ON_PARAM, 0.0, 1.0, 0.0, "All Gates On", {"On", "Off"});
-        
         configInput(GATE1_INPUT, "Gate 1");
         configInput(GATE2_INPUT, "Gate 2");
         configInput(GATE3_INPUT, "Gate 3");
@@ -157,6 +158,5 @@ struct SDTransgateWidget : ModuleWidget {
         addChild(createLightCentered<SmallLight<SDWhiteLight>>(mm2px(Vec(12.7, 90.28)), module, SDTransgate::GATEON8_LIGHT));
     }
 };
-
 
 Model* modelSDTransgate = createModel<SDTransgate, SDTransgateWidget>("SDTransgate");
