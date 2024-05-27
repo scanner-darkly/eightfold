@@ -20,6 +20,22 @@ it to sequence up to 8 voices and produce 8 modulation CVs and gates that can be
 
 A mono to polyphonic voltage converter - take a single voltage and convert it into a swarm of eight voltages.
 
+## transgate
+
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/transgate_panel.jpg?raw=true" alt="formation panel" width="74" height="380" />
+
+[Full Manual](https://github.com/scanner-darkly/eightfold/wiki/Transgate)
+
+A polyphonic precision added - transpose a voltage when the corresponding gate is high. Transposition levels are set in semitones.
+
+## comparator
+
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/comparator_panel.jpg?raw=true" alt="formation panel" width="74" height="380" />
+
+[Full Manual](https://github.com/scanner-darkly/eightfold/wiki/Comparator)
+
+A polyphonic comparator - generate a gate when the input voltage reaches the corresponding threshold level.
+
 ## lines
 
 <img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/lines_panel.jpg?raw=true" alt="lines panel" width="29" height="380" />
