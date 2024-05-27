@@ -2,7 +2,7 @@
 
 A collection of modules centered around the concept of generating and processing eight voices.
 
-<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/orcas_heart_v2_panel.jpg?raw=true" alt="all module plates" width="736" height="380" />
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/family.jpg?raw=true" alt="all module plates" width="736" height="380" />
 
 ## orca's heart v2
 
