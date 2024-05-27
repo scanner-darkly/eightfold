@@ -2,6 +2,8 @@
 
 A collection of modules centered around the concept of generating and processing eight voices.
 
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/orcas_heart_v2_panel.jpg?raw=true" alt="all module plates" width="736" height="380" />
+
 ## orca's heart v2
 
 <img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/orcas_heart_v2_panel.jpg?raw=true" alt="orca's heart v2 panel" width="450" height="380" />
@@ -22,7 +24,7 @@ A mono to polyphonic voltage converter - take a single voltage and convert it in
 
 ## transgate
 
-<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/transgate_panel.jpg?raw=true" alt="formation panel" width="74" height="380" />
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/transgate_panel.jpg?raw=true" alt="transgate panel" width="74" height="380" />
 
 [Full Manual](https://github.com/scanner-darkly/eightfold/wiki/Transgate)
 
@@ -30,7 +32,7 @@ A polyphonic precision added - transpose a voltage when the corresponding gate i
 
 ## comparator
 
-<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/comparator_panel.jpg?raw=true" alt="formation panel" width="74" height="380" />
+<img src="https://github.com/scanner-darkly/eightfold-docs/blob/main/images/comparator_panel.jpg?raw=true" alt="comparator panel" width="74" height="380" />
 
 [Full Manual](https://github.com/scanner-darkly/eightfold/wiki/Comparator)
 
