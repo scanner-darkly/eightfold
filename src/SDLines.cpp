@@ -101,6 +101,7 @@ struct SDLinesDisplay : TransparentWidget {
         }
         
         float voltage = module->inputs[SDLines::IN_INPUT].getVoltage(i);
+        // uncomment for screenshots voltage = (i + 1) * 1.2f - 5.f;
         
         NVGcolor color;
         if (voltage < min) {
@@ -143,6 +144,8 @@ struct SDLinesDisplay : TransparentWidget {
 
             if (module) {
                 int channels = std::min(MAX_CHANNELS, module->inputs[SDLines::IN_INPUT].getChannels());
+                // uncomment for screenshots channels = 8;
+                
                 deltaX = channels > 1 ? (w - 2.f - stroke * channels) / (channels - 1) + stroke : stroke;
                 
                 /*
