@@ -48,14 +48,14 @@ struct SDComparator : Module {
     SDComparator() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
         
-        configParam(LEVEL1_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL2_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL3_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL4_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL5_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL6_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL7_PARAM, -10.f, 10.f, 0.f, "");
-        configParam(LEVEL8_PARAM, -10.f, 10.f, 0.f, "");
+        configParam(LEVEL1_PARAM, -10.f, 10.f, 0.f, "Threshold Level 1");
+        configParam(LEVEL2_PARAM, -10.f, 10.f, 0.f, "Threshold Level 2");
+        configParam(LEVEL3_PARAM, -10.f, 10.f, 0.f, "Threshold Level 3");
+        configParam(LEVEL4_PARAM, -10.f, 10.f, 0.f, "Threshold Level 4");
+        configParam(LEVEL5_PARAM, -10.f, 10.f, 0.f, "Threshold Level 5");
+        configParam(LEVEL6_PARAM, -10.f, 10.f, 0.f, "Threshold Level 6");
+        configParam(LEVEL7_PARAM, -10.f, 10.f, 0.f, "Threshold Level 7");
+        configParam(LEVEL8_PARAM, -10.f, 10.f, 0.f, "Threshold Level 8");
         
         configSwitch(DOT_PARAM, 0.0, 1.0, 0.0, "Dot Mode", {"On", "Off"});
         getParamQuantity(DOT_PARAM)->randomizeEnabled = false;
@@ -89,12 +89,15 @@ struct SDComparator : Module {
         bool gates[CHANNEL_COUNT];
         float level, voltage, highest;
         voltage = inputs[INPUT_INPUT].getVoltage();
+        
         highest = -100.f;
         int highest_index = -1;
         bool higher;
         
+        int level_count = inputs[LEVELS_INPUT].getChannels();
+        
         for (int i = 0; i < CHANNEL_COUNT; i++) {
-            level = inputs[LEVELS_INPUT].getVoltage(i) + params[LEVEL1_PARAM + i].getValue();
+            level = (i < level_count ? inputs[LEVELS_INPUT].getVoltage(i) : 0.f) + params[LEVEL1_PARAM + i].getValue();
             higher = voltage >= level;
             
             gates[i] = higher;

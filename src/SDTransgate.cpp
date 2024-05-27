@@ -88,6 +88,7 @@ struct SDTransgate : Module {
     }
 
     void process(const ProcessArgs& args) override {
+        
         int input_count = inputs[INPUT_INPUT].getChannels();
         float last_voltage = input_count > 0 ? inputs[INPUT_INPUT].getVoltage(input_count - 1) : 0.f;
         
