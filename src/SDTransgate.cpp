@@ -88,34 +88,32 @@ struct SDTransgate : Module {
     }
 
     void process(const ProcessArgs& args) override {
-        int gate_count = inputs[GATES_INPUT].getChannels();
         int input_count = inputs[INPUT_INPUT].getChannels();
-        if (input_count > CHANNEL_COUNT) input_count = CHANNEL_COUNT;
+        float last_voltage = input_count > 0 ? inputs[INPUT_INPUT].getVoltage(input_count - 1) : 0.f;
         
         bool gates[CHANNEL_COUNT];
-        bool last_gate = gate_count > 0 ? inputs[GATES_INPUT].getVoltage(gate_count - 1) : false;
-
-        if (params[ALL_ON_PARAM].getValue() == 1) {
-            for (int i = 0; i < CHANNEL_COUNT; i++) {
-                gates[i] = true;
-                lights[GATEON1_LIGHT + i].setBrightness(1.f);
-            }
+        int gate_count = inputs[GATES_INPUT].getChannels();
+        bool last_gate = gate_count > 0 ? inputs[GATES_INPUT].getVoltage(gate_count - 1) > 0 : false;
+        
+        if (params[ALL_ON_PARAM].getValue() == 1) { // all gates on
+            for (int i = 0; i < CHANNEL_COUNT; i++) gates[i] = true;
         } else {
             for (int i = 0; i < CHANNEL_COUNT; i++) {
                 gates[i] = inputs[GATE1_INPUT + i].getChannels() ?
                     inputs[GATE1_INPUT + i].getVoltage() > 0 :
                     i < gate_count ? inputs[GATES_INPUT].getVoltage(i) > 0 : last_gate;
-                lights[GATEON1_LIGHT + i].setBrightness(gates[i] ? 1.f : 0.f);
             }
         }
         
-        for (int i = 0; i < input_count; i++) {
-            float voltage = inputs[INPUT_INPUT].getVoltage(i);
+        for (int i = 0; i < CHANNEL_COUNT; i++) {
+            float voltage = i < input_count ? inputs[INPUT_INPUT].getVoltage(i) : last_voltage;
             if (gates[i]) voltage += params[TRANS1_PARAM + i].getValue() / 12.f;
             outputs[OUTPUT_OUTPUT].setVoltage(voltage, i);
+            
+            lights[GATEON1_LIGHT + i].setBrightness(gates[i] ? 1.f : 0.f);
         }
         
-        outputs[OUTPUT_OUTPUT].setChannels(input_count);
+        outputs[OUTPUT_OUTPUT].setChannels(CHANNEL_COUNT);
     }
 };
 
