@@ -317,15 +317,15 @@ struct SDOrcasHeartV2 : Module {
 
     int scaleSwitchMode = 0;
     
-    dsp::SchmittTrigger clockIn, resetIn, scaleSwitchTrig, scaleInputTrig;
+    dsp::SchmittTrigger clockIn{}, resetIn{}, scaleSwitchTrig{}, scaleInputTrig{};
     dsp::PulseGenerator clockOut, resetOut;
     ParamQuantity* speedParamQuantity;
 
     float internalClock = 2.f, clockInterval, clockIntervalCounter;
     
-    int length, voices, algoX, algoY, shift, rotate, space;
-    double speed;
-    float transpose, gateLength, spread;
+    int length{}, voices{}, algoX{}, algoY{}, shift{}, rotate{}, space{};
+    double speed{};
+    float transpose{}, gateLength{}, spread{};
     
     int scales[SCALECOUNT + 1][SCALELEN] = {};
     int scaleCount[SCALECOUNT + 1] = {};
@@ -340,12 +340,12 @@ struct SDOrcasHeartV2 : Module {
     int trackOn[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int weightOn[TRACKCOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    int notes[NOTECOUNT][HISTORYCOUNT];
-    bool gateOn[NOTECOUNT][HISTORYCOUNT];
-    bool gateChanged[NOTECOUNT][HISTORYCOUNT];
+    int notes[NOTECOUNT][HISTORYCOUNT]{};
+    bool gateOn[NOTECOUNT][HISTORYCOUNT]{};
+    bool gateChanged[NOTECOUNT][HISTORYCOUNT]{};
 
     float gateTimer[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    bool gateTriggered[NOTECOUNT];
+    bool gateTriggered[NOTECOUNT]{};
     int muted[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int shifts[NOTECOUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
