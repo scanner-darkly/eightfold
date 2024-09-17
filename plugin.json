@@ -2,7 +2,7 @@
   "slug": "eightfold",
   "name": "eightfold",
   "version": "2.0.1",
-  "license": "GPL-3.0-only",
+  "license": "GPL-3.0-or-later",
   "brand": "scanner darkly",
   "author": "scanner darkly",
   "authorUrl": "https://github.com/scanner-darkly",
